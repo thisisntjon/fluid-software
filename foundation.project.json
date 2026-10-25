@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "id": "fluid-foundation",
+  "name": "Portable Fluid foundation",
+  "outcome": "A working portable copy of the real local project framing and continuation tool.",
+  "acceptance": [
+    "Run CLI from this directory with Python 3.11+ and no installation.",
+    "Track actual implementation delivery and independent review with current evidence."
+  ],
+  "constraints": [
+    "No service, network, agent launching or embedded-command execution."
+  ],
+  "sources": [
+    "docs/FOUNDATION-CONTRACT.md"
+  ],
+  "entrypoints": [
+    "python fluid.py status .",
+    "python fluid.py context . --module cli"
+  ],
+  "modules": [
+    {
+      "id": "model",
+      "name": "Model",
+      "purpose": "Validate briefs and confine portable filesystem paths.",
+      "owner": "model maintainer",
+      "home": "areas/model",
+      "owns": [
+        "fluid/model.py"
+      ],
+      "outputs": [
+        "Validate briefs and confine portable filesystem paths."
+      ],
+      "acceptance": [
+        "Actual CLI use and separate code review support the promised behavior."
+      ],
+      "depends_on": [],
+      "build_after": [],
+      "context": [
+        "docs/FOUNDATION-CONTRACT.md"
+      ],
+      "commands": [
+        "python fluid.py --help"
+      ]
+    },
+    {
+      "id": "frame",
+      "name": "Frame",
+      "purpose": "Materialize native files safely and render bounded context.",
+      "owner": "frame maintainer",
+      "home": "areas/frame",
+      "owns": [
+        "fluid/frame.py"
+      ],
+      "outputs": [
+        "Materialize native files safely and render bounded context."
+      ],
+      "acceptance": [
+        "Actual CLI use and separate code review support the promised behavior."
+      ],
+      "depends_on": [
+        "model"
+      ],
+      "build_after": [],
+      "context": [
+        "docs/FOUNDATION-CONTRACT.md"
+      ],
+      "commands": [
+        "python fluid.py --help"
+      ]
+    },
+    {
+      "id": "state",
+      "name": "State",
+      "purpose": "Preserve ownership, real evidence and delivery freshness.",
+      "owner": "state maintainer",
+      "home": "areas/state",
+      "owns": [
+        "fluid/state.py"
+      ],
+      "outputs": [
+        "Preserve ownership, real evidence and delivery freshness."
+      ],
+      "acceptance": [
+        "Actual CLI use and separate code review support the promised behavior."
+      ],
+      "depends_on": [
+        "model"
+      ],
+      "build_after": [],
+      "context": [
+        "docs/FOUNDATION-CONTRACT.md"
+      ],
+      "commands": [
+        "python fluid.py --help"
+      ]
+    },
+    {
+      "id": "cli",
+      "name": "Cli",
+      "purpose": "Expose useful local commands and clear machine/human output.",
+      "owner": "cli maintainer",
+      "home": "areas/cli",
+      "owns": [
+        "fluid.py",
+        "fluid/__main__.py"
+      ],
+      "outputs": [
+        "Expose useful local commands and clear machine/human output."
+      ],
+      "acceptance": [
+        "Actual CLI use and separate code review support the promised behavior."
+      ],
+      "depends_on": [
+        "model",
+        "frame",
+        "state"
+      ],
+      "build_after": [],
+      "context": [
+        "docs/FOUNDATION-CONTRACT.md"
+      ],
+      "commands": [
+        "python fluid.py --help"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "fluid/model.py",
+      "owner": "model",
+      "purpose": "Actual portable foundation implementation",
+      "copy_from": "fluid/model.py",
+      "sha256": "4acf476365ba3364674c70273986d2e614768b8e4d3e6a915d0b25b9dee5ebba"
+    },
+    {
+      "path": "fluid/frame.py",
+      "owner": "frame",
+      "purpose": "Actual portable foundation implementation",
+      "copy_from": "fluid/frame.py",
+      "sha256": "2fad0fd4af53c67857602186cf70ddd3e73550840f44fdb492ff42cd1fc324ee"
+    },
+    {
+      "path": "fluid/state.py",
+      "owner": "state",
+      "purpose": "Actual portable foundation implementation",
+      "copy_from": "fluid/state.py",
+      "sha256": "b040c97a76deec75a35b3b3500bbbf0eee3be875179063765c9160b5f416674f"
+    },
+    {
+      "path": "fluid.py",
+      "owner": "cli",
+      "purpose": "Actual portable foundation implementation",
+      "copy_from": "fluid.py",
+      "sha256": "ba0b38440a0b29fad0a0566af2cf85b7f28367700844b6e7a731cb00e9b54bf4"
+    },
+    {
+      "path": "fluid/__main__.py",
+      "owner": "cli",
+      "purpose": "Actual portable foundation implementation",
+      "copy_from": "fluid/__main__.py",
+      "sha256": "c783a995f974a040baa642d87c1e5189bb4b2a4abfdfb1845cdf63f92ffaf824"
+    },
+    {
+      "path": "fluid/__init__.py",
+      "owner": "shared",
+      "purpose": "Runtime package identity and frozen public contract",
+      "copy_from": "fluid/__init__.py",
+      "sha256": "b2547b60046ea9e921f86f2a11c3c5fba5dbab12e833e360d5883e45e60dd098"
+    },
+    {
+      "path": "docs/FOUNDATION-CONTRACT.md",
+      "owner": "shared",
+      "purpose": "Runtime package identity and frozen public contract",
+      "copy_from": "docs/FOUNDATION-CONTRACT.md",
+      "sha256": "3b5d0089685274a9bcdd9693a32e2c1468f8e1878104ea0116c37db7246427b8"
+    }
+  ]
+}
