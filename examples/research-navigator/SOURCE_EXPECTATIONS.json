@@ -1,0 +1,83 @@
+{
+  "status": "draft-source-observations-before-builds",
+  "text_hash_convention": "SHA-256 of exact UTF-8 anchor text, excluding line terminator; DOCX anchor text concatenates descendant w:t nodes of the native paragraph.",
+  "docx_locator_convention": "1-based document-order w:p descendants of w:body, including empty paragraphs and paragraphs in tables",
+  "sources": [
+    {
+      "source": "deep-research-report.md",
+      "bytes": 50838,
+      "sha256": "2b37c57beaa7af8938f3a3c3863fefe6749de51fb132b75b268252a901c106f6",
+      "line_count": 1048
+    },
+    {
+      "source": "junglegym.md",
+      "bytes": 29972,
+      "sha256": "4ef6076f42dafbcf4c6b565a523b1ef3cb67053b6d1c01519da7ec3ce337fbab",
+      "line_count": 177
+    },
+    {
+      "source": "resuse.txt",
+      "bytes": 10560,
+      "sha256": "cb0d51cdecbecfd846ea81e599611408007f3e3b0d2e80cd79a58f138e041b3f",
+      "line_count": 17
+    },
+    {
+      "source": "Hierarchical Scaffolding in AI Development.docx",
+      "bytes": 5292301,
+      "sha256": "9eee4caf1a9e9ecfae309681b4cbaff35cd73b4df3d676521f03485e41dbdd86",
+      "body_paragraph_count": 223,
+      "nonempty_body_paragraph_count": 216
+    }
+  ],
+  "anchors": [
+    {
+      "source": "deep-research-report.md",
+      "kind": "lines",
+      "start": 313,
+      "end": 313,
+      "query": "largest coherent responsibility",
+      "heading": "The agent-completable unit",
+      "text": "> **The largest coherent responsibility that one agent can understand, implement, verify locally, and hand back through a stable interface without needing to continually reason about unrelated parts of the system.**",
+      "text_sha256": "ebb2264b865492e5ddb00030887e29f9abd2fb3735fffebad86b25c4911f4cd4"
+    },
+    {
+      "source": "junglegym.md",
+      "kind": "lines",
+      "start": 119,
+      "end": 119,
+      "query": "Parallelize only across independent, separately gradable units",
+      "heading": "Recommendations",
+      "text": "**Parallelize only across independent, separately gradable units.** Keep one orchestrating loop that carries state. Use git-based task locks and one editor per shared interface. When work collapses into one monolithic failure, as with Carlini's kernel, use the oracle to split it before adding agents.",
+      "text_sha256": "d47ba8cdedba53d9160936e5ae8dc66c8cbb5c6b96238dd444be650e0379feb8"
+    },
+    {
+      "source": "resuse.txt",
+      "kind": "lines",
+      "start": 16,
+      "end": 16,
+      "query": "Measure usable connected capabilities",
+      "text": "Measure usable connected capabilities (what a user can now do) rather than agent activity, test counts, or LOC.",
+      "text_sha256": "498eaaaec9bdc6fb82382530939f9d7d73d38e52ae0ac9211e9cc3c0ce27e7fe"
+    },
+    {
+      "source": "Hierarchical Scaffolding in AI Development.docx",
+      "kind": "paragraphs",
+      "start": 72,
+      "end": 72,
+      "query": "The Over-Mocking Epidemic",
+      "text": "1. The Over-Mocking Epidemic (Hora & Robbes, MSR 2026)",
+      "text_sha256": "487c169c437c61abd3b3ed6e71002e8e449c2b0c626b7b84520babd200dcf0ed",
+      "style": "Heading3"
+    },
+    {
+      "source": "Hierarchical Scaffolding in AI Development.docx",
+      "kind": "paragraphs",
+      "start": 28,
+      "end": 28,
+      "query": "Strictly bounded by AST dependency graphs",
+      "text": "Strictly bounded by AST dependency graphs and pinned I/O contracts4",
+      "text_sha256": "184cbe9cd492429294a46999debe71d0c403afb77f58fff4a8564ac92072a448",
+      "inside_table": true
+    }
+  ]
+}

@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FluidSoftware — From Building a Book to Building Software (Vector Showcase)</title>
+  <style>
+    /* Self-contained offline layout utilities (replaces external CDN script) */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .min-h-screen { min-height: 100vh; }
+    .max-w-\[1440px\] { max-width: 1440px; }
+    .mx-auto { margin-left: auto; margin-right: auto; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .p-2\.5 { padding: 0.625rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-4 { padding: 1rem; }
+    .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+    .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+    .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+    .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+    .pt-1 { padding-top: 0.25rem; }
+    .pt-2 { padding-top: 0.5rem; }
+    .pb-2 { padding-bottom: 0.5rem; }
+    .pb-3 { padding-bottom: 0.75rem; }
+    .pl-2\.5 { padding-left: 0.625rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-3 { margin-top: 0.75rem; }
+    .mb-0\.5 { margin-bottom: 0.125rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .flex { display: flex; }
+    .inline-flex { display: inline-flex; }
+    .inline-block { display: inline-block; }
+    .grid { display: grid; }
+    .hidden { display: none; }
+    .flex-col { flex-direction: column; }
+    .flex-wrap { flex-wrap: wrap; }
+    .flex-1 { flex: 1 1 0%; }
+    .items-center { align-items: center; }
+    .items-start { align-items: flex-start; }
+    .justify-between { justify-content: space-between; }
+    .justify-center { justify-content: center; }
+    .gap-1\.5 { gap: 0.375rem; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-4 { gap: 1rem; }
+    .space-y-1 > * + * { margin-top: 0.25rem; }
+    .space-y-2 > * + * { margin-top: 0.5rem; }
+    .space-y-2\.5 > * + * { margin-top: 0.625rem; }
+    .space-y-3 > * + * { margin-top: 0.75rem; }
+    .space-y-4 > * + * { margin-top: 1rem; }
+    .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (min-width: 640px) {
+      .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1024px) {
+      .lg\:flex-row { flex-direction: row; }
+      .lg\:items-center { align-items: center; }
+      .lg\:justify-between { justify-content: space-between; }
+      .lg\:grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+      .lg\:grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+      .lg\:col-span-8 { grid-column: span 8 / span 8; }
+      .lg\:col-span-4 { grid-column: span 4 / span 4; }
+    }
+    .w-full { width: 100%; }
+    .w-2\.5 { width: 0.625rem; }
+    .h-2\.5 { height: 0.625rem; }
+    .h-auto { height: auto; }
+    .rounded { border-radius: 0.25rem; }
+    .rounded-lg { border-radius: 0.5rem; }
+    .rounded-xl { border-radius: 0.75rem; }
+    .rounded-full { border-radius: 9999px; }
+    .border { border: 1px solid var(--border); }
+    .border-b { border-bottom: 1px solid var(--border); }
+    .border-t { border-top: 1px solid var(--border); }
+    .border-l-2 { border-left: 2px solid #06b6d4; }
+    .bg-\[var\(--background\)\] { background-color: var(--background); }
+    .bg-\[var\(--card\)\] { background-color: var(--card); }
+    .bg-cyan-400 { background-color: #22d3ee; }
+    .bg-amber-400 { background-color: #fbbf24; }
+    .bg-emerald-400 { background-color: #34d399; }
+    .bg-emerald-500\/15 { background-color: rgba(16, 185, 129, 0.15); }
+    .text-\[var\(--foreground\)\] { color: var(--foreground); }
+    .text-\[var\(--muted-foreground\)\] { color: var(--muted-foreground); }
+    .text-cyan-400 { color: #22d3ee; }
+    .text-amber-400 { color: #fbbf24; }
+    .text-emerald-400 { color: #34d399; }
+    .text-xs { font-size: 0.78rem; line-height: 1.25rem; }
+    .text-sm { font-size: 0.9rem; line-height: 1.35rem; }
+    .text-base { font-size: 1rem; line-height: 1.5rem; }
+    .text-lg { font-size: 1.15rem; line-height: 1.65rem; }
+    .text-xl { font-size: 1.35rem; line-height: 1.85rem; }
+    .font-bold { font-weight: 700; }
+    .font-semibold { font-weight: 600; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .uppercase { text-transform: uppercase; }
+    .tracking-wider { letter-spacing: 0.05em; }
+    .leading-relaxed { line-height: 1.6; }
+    .whitespace-pre-wrap { white-space: pre-wrap; }
+    .overflow-hidden { overflow: hidden; }
+    .cursor-pointer { cursor: pointer; }
+    .select-none { user-select: none; }
+  </style>
+  <style>
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.55; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.06); }
+    }
+    @keyframes dashFlow {
+      to { stroke-dashoffset: -48; }
+    }
+    @keyframes dashFlowReverse {
+      to { stroke-dashoffset: 48; }
+    }
+    @keyframes orbitSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .vec-dash-flow {
+      animation: dashFlow 1.8s linear infinite;
+    }
+    .vec-dash-up {
+      animation: dashFlowReverse 1.4s linear infinite;
+    }
+    .vec-spin {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: orbitSpin 6s linear infinite;
+    }
+    .vec-node {
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .vec-node:hover {
+      transform: scale(1.06);
+    }
+    svg text {
+      user-select: none;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .mono-text {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-4 md:p-6 select-none">
+
+  <!-- Main Container -->
+  <div class="max-w-7xl mx-auto space-y-4">
+
+    <!-- Top Header & Narrative Banner -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 md:p-5 shadow-sm flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2.5 flex-wrap">
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+            FLUIDSOFTWARE DESIGN TECHNIQUE
+          </span>
+          <span class="text-xs text-[var(--muted-foreground)] mono-text">
+            Top-Down Structural Frame × Bottom-Up High-Quality Component Synthesis
+          </span>
+        </div>
+        <h1 class="text-xl md:text-2xl font-bold tracking-tight text-[var(--foreground)]">
+          “I wouldn’t write a book anymore — I would <span class="text-cyan-400">build</span> one.”
+        </h1>
+        <p class="text-sm text-[var(--muted-foreground)] max-w-3xl">
+          Start with a spark, steer the synopsis, break it recursively into acts, chapters, paragraphs, sentences, and words — then apply that exact force multiplier to software by decomposing into modules and atomic components and building each smallest piece to strict quality standards from the bottom up.
+        </p>
+      </div>
+
+      <!-- Playback Controls -->
+      <div class="flex items-center gap-2 self-start lg:self-center bg-[var(--background)] border border-[var(--border)] rounded-xl p-2">
+        <button id="btnPrev" class="px-3 py-1.5 rounded-lg text-xs font-medium border border-[var(--border)] hover:bg-[var(--card)] transition" title="Previous Act">
+          ◀ Prev
+        </button>
+        <button id="btnPlayPause" class="px-4 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500 text-slate-950 hover:bg-cyan-400 transition flex items-center gap-1.5 shadow-sm">
+          <span id="playIcon">⏸</span>
+          <span id="playLabel">Pause</span>
+        </button>
+        <button id="btnNext" class="px-3 py-1.5 rounded-lg text-xs font-medium border border-[var(--border)] hover:bg-[var(--card)] transition" title="Next Act">
+          Next ▶
+        </button>
+        <div class="h-5 w-px bg-[var(--border)] mx-1"></div>
+        <button id="btnSpeed" class="px-2.5 py-1.5 rounded-lg text-xs font-mono border border-[var(--border)] hover:bg-[var(--card)] transition" title="Cycle Playback Speed">
+          1.0x
+        </button>
+      </div>
+    </div>
+
+    <!-- 6-Act Stepper Scrubber -->
+    <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-3 shadow-sm">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2" id="actTabs">
+        <!-- Populated by JS -->
+      </div>
+      <!-- Progress Bar -->
+      <div class="mt-3 flex items-center gap-3">
+        <span class="text-xs font-mono text-[var(--muted-foreground)] w-14" id="timeReadout">Act 1/6</span>
+        <div class="flex-1 h-2 bg-[var(--background)] rounded-full overflow-hidden border border-[var(--border)] cursor-pointer" id="scrubberTrack">
+          <div id="scrubberFill" class="h-full bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 transition-all duration-100" style="width: 10%;"></div>
+        </div>
+        <span class="text-xs font-mono text-cyan-400 w-28 text-right" id="phaseSubStatus">Expanding...</span>
+      </div>
+    </div>
+
+    <!-- Main Stage: Vector Canvas + Inspector Sidebar -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+
+      <!-- Vector Canvas Column (8 cols) -->
+      <div class="lg:col-span-8 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3 md:p-4 shadow-sm flex flex-col justify-between relative overflow-hidden">
+        
+        <!-- Dynamic Stage Subheader & Interactive Act Controls -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-2 border-b border-[var(--border)]">
+          <div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-cyan-400" id="actKicker">ACT I — ORIGIN OF THE METHOD</div>
+            <h2 class="text-base md:text-lg font-bold text-[var(--foreground)]" id="actTitle">The Book Builder: Recursive Expansion & Quality Gates</h2>
+          </div>
+
+          <!-- Contextual Interactive Controls per Act -->
+          <div id="contextualControls" class="flex items-center gap-2 flex-wrap">
+            <!-- Injected per Act -->
+          </div>
+        </div>
+
+        <!-- Primary SVG Vector Viewport -->
+        <div class="relative w-full rounded-lg bg-[var(--background)] border border-[var(--border)] overflow-hidden">
+          <svg id="vectorStage" viewBox="0 0 920 520" class="w-full h-auto block">
+            <defs>
+              <!-- Blueprint Grid Pattern -->
+              <pattern id="blueprintGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+                <path d="M 32 0 L 0 0 0 32" fill="none" stroke="currentColor" stroke-width="0.6" class="text-[var(--border)] opacity-35" />
+                <circle cx="0" cy="0" r="1" fill="currentColor" class="text-cyan-500 opacity-30" />
+              </pattern>
+
+              <!-- Glow Filters -->
+              <filter id="cyanGlow" x="-25%" y="-25%" width="150%" height="150%">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+
+              <filter id="emeraldGlow" x="-25%" y="-25%" width="150%" height="150%">
+                <feGaussianBlur stdDeviation="3.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+
+              <!-- Vector Gradients -->
+              <linearGradient id="gradCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.28" />
+                <stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.08" />
+              </linearGradient>
+              <linearGradient id="gradEmerald" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.28" />
+                <stop offset="100%" stop-color="#059669" stop-opacity="0.08" />
+              </linearGradient>
+              <linearGradient id="gradAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.28" />
+                <stop offset="100%" stop-color="#d97706" stop-opacity="0.08" />
+              </linearGradient>
+              <linearGradient id="gradPurple" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.28" />
+                <stop offset="100%" stop-color="#6366f1" stop-opacity="0.08" />
+              </linearGradient>
+              <linearGradient id="gradRose" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.28" />
+                <stop offset="100%" stop-color="#e11d48" stop-opacity="0.08" />
+              </linearGradient>
+
+              <!-- Arrow Markers -->
+              <marker id="arrowCyan" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#22d3ee" />
+              </marker>
+              <marker id="arrowEmerald" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#34d399" />
+              </marker>
+              <marker id="arrowAmber" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#fbbf24" />
+              </marker>
+            </defs>
+
+            <!-- Background Blueprint Grid -->
+            <rect x="0" y="0" width="920" height="520" fill="url(#blueprintGrid)" />
+
+            <!-- Dynamic Scene Group -->
+            <g id="sceneRoot"></g>
+          </svg>
+        </div>
+
+        <!-- Bottom Legend & Force Multiplier Metrics Bar -->
+        <div class="mt-3 pt-2 border-t border-[var(--border)] flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-4 flex-wrap">
+            <span class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block"></span>
+              <span class="text-[var(--muted-foreground)]">Top-Down Decomposition / Frame</span>
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>
+              <span class="text-[var(--muted-foreground)]">Active Generation & Quality Refinement</span>
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
+              <span class="text-[var(--muted-foreground)]">Bottom-Up Verified & Connected</span>
+            </span>
+          </div>
+          <div class="text-[var(--muted-foreground)] font-mono" id="stageFooterHint">
+            Tip: Click any vector node in the diagram to inspect its contract & quality standard.
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Sidebar: Live Narrative, Manuscript/Code Zoom & Node Inspector (4 cols) -->
+      <div class="lg:col-span-4 flex flex-col gap-4">
+
+        <!-- Why It Works Card -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400" id="sideCardBadge">BOUNDED DECOMPOSITION MECHANISM</span>
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-[var(--background)] border border-[var(--border)]" id="multiplierReadout">Coherent Module Units</span>
+          </div>
+          <h3 class="text-base font-bold text-[var(--foreground)]" id="sideCardTitle">
+            Steer the Synopsis, Cascade the Structure
+          </h3>
+          <p class="text-xs leading-relaxed text-[var(--muted-foreground)]" id="sideCardBody">
+            Instead of drafting line-by-line into an empty void, you invest human taste where leverage is highest: shaping the Synopsis. Once locked, each level expands into the next, refined to strict quality standards before descending.
+          </p>
+
+          <!-- Live Zoom Artifact Preview (Shows Book Text or Software Code/CLI at Current Rung) -->
+          <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-3 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-semibold text-cyan-400" id="artifactPreviewHeader">LIVE RESOLUTION PREVIEW</span>
+              <span class="font-mono text-[var(--muted-foreground)]" id="artifactPreviewRung">Rung 2 / 7</span>
+            </div>
+            <div class="text-xs font-mono leading-relaxed text-[var(--foreground)] whitespace-pre-wrap border-l-2 border-cyan-500 pl-2.5 py-1" id="artifactPreviewContent">
+              Loading preview...
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Node Inspector Card -->
+        <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm flex-1 flex flex-col justify-between space-y-3">
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between border-b border-[var(--border)] pb-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">
+                VECTOR NODE INSPECTOR
+              </span>
+              <span id="inspStatusBadge" class="px-2 py-0.5 rounded text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                VERIFIED RUNG
+              </span>
+            </div>
+
+            <div class="space-y-1">
+              <div class="text-sm font-bold text-[var(--foreground)]" id="inspTitle">
+                Select any node in the vector stage
+              </div>
+              <div class="text-xs text-[var(--muted-foreground)]" id="inspSubtitle">
+                Compare how the Book Builder and FluidSoftware treat this structural unit.
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-2 pt-1">
+              <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-2.5">
+                <div class="text-xs font-semibold text-amber-400 mb-0.5">📖 Book Builder Role</div>
+                <div class="text-xs text-[var(--foreground)]" id="inspBookRole">
+                  Synopsis → Acts → Chapters → Paragraphs → Components → Verified Module Deliverables
+                </div>
+              </div>
+              <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-2.5">
+                <div class="text-xs font-semibold text-cyan-400 mb-0.5">⚙️ FluidSoftware Equivalent</div>
+                <div class="text-xs text-[var(--foreground)]" id="inspSoftRole">
+                  Brief (project.json) → Subsystems → Modules (MODULE.md) → Atomic Components
+                </div>
+              </div>
+              <div class="bg-[var(--background)] border border-[var(--border)] rounded-lg p-2.5">
+                <div class="text-xs font-semibold text-emerald-400 mb-0.5">✓ Quality Standard & CLI Action</div>
+                <div class="text-xs font-mono text-[var(--muted-foreground)]" id="inspCliCmd">
+                  python fluid.py frame project.json target --apply
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Principle Callout -->
+          <div class="pt-2 border-t border-[var(--border)] flex items-center justify-between text-xs text-[var(--muted-foreground)]">
+            <span>Design Principle:</span>
+            <span class="font-semibold text-[var(--foreground)]" id="inspPrinciple">Top-Down Frame, Bottom-Up Quality</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // STATE & DATA DEFINITIONS
+    // =========================================================================
+    const ACTS = [
+      {
+        id: 0,
+        short: "1. Book Cascade",
+        kicker: "ACT I — HOW THE DESIGN ORIGINALLY FORMED",
+        title: "“I Wouldn’t Write a Book — I Would Build One”",
+        badge: "RECURSIVE EXPANSION CASCADE",
+        multiplier: "1 Idea → 7 Levels",
+        sideTitle: "Top-Down Expansion Through Every Level of Resolution",
+        sideBody: "Write out the basic idea and use generation to enhance and modify until you have the synopsis you want. Break the synopsis into acts and edit to your quality standard — then repeat for chapters, pages, paragraphs, sentences, stopping at the largest coherent buildable unit so interface overhead does not swamp implementation.",
+        principle: "Refine & Lock Each Rung Before Expanding Downward"
+      },
+      {
+        id: 1,
+        short: "2. Book ↔ Code",
+        kicker: "ACT II — STRUCTURAL ISOMORPHISM",
+        title: "Translating the Book Cascade into Software Architecture",
+        badge: "BOOK ↔ SOFTWARE BRIDGE",
+        multiplier: "1:1 Structural Mapping",
+        sideTitle: "From Narrative Hierarchy to Modular Software",
+        sideBody: "Stories and software fail the same way when generated in one shot: context rot and structural drift. By mapping Synopsis → Project Brief, Acts → Subsystems, Chapters → Modules, and Sentences/Words → Atomic Components & Verified Bytes, software becomes fluid.",
+        principle: "Wirth’s Stepwise Refinement + Parnas’s Information Hiding"
+      },
+      {
+        id: 2,
+        short: "3. Bottom-Up Build",
+        kicker: "ACT III — BOTTOM-UP COMPONENT MASTERY",
+        title: "Decompose Top-Down, Build Each Smallest Component Bottom-Up",
+        badge: "HIGH-QUALITY ATOMIC SYNTHESIS",
+        multiplier: "9 Leaf Units → 4 Modules → 1 System",
+        sideTitle: "Design Down to Components, Construct & Verify Bottom-Up",
+        sideBody: "Once the design is broken into modules and smallest buildable components with pinned contracts, agents build each atomic component at the bottom to strict quality standards. Verified leaf components assemble upward into rock-solid modules and a working whole.",
+        principle: "Smallest Buildable Units Verified Against Pinned Contracts"
+      },
+      {
+        id: 3,
+        short: "4. Monkey Bars",
+        kicker: "ACT IV — ERECTING THE JUNGLE GYM",
+        title: "Rapid Frame Materialization & Reference Anchoring",
+        badge: "FLUID.PY FRAME --APPLY",
+        multiplier: "0 Conflicts • Disjoint Ownership",
+        sideTitle: "Existing Reference (“Monkey Bars”) + Native Contracts",
+        sideBody: "Agents get lost in empty directories. FluidSoftware inspects reusable references ('monkey bars') and materializes native module homes, MODULE.md boundaries, and separates semantic contracts (depends_on) from dispatch gates (build_after).",
+        principle: "External Reference as Oracle + Disjoint File Ownership"
+      },
+      {
+        id: 4,
+        short: "5. Bounded Context",
+        kicker: "ACT V — ELIMINATING CONTEXT ROT",
+        title: "Three-Tier Bounded Context Zoom (Whole → Area → Assignment)",
+        badge: "FLUID.PY CONTEXT --MODULE",
+        multiplier: "3-Tier Bounded Context",
+        sideTitle: "Why Agents Stay Sharp on Huge Projects",
+        sideBody: "Monolithic prompts bury critical rules in the middle of the context window ('Lost in the Middle'). FluidSoftware gives each builder three clean lenses: the Whole capability map, the Area neighborhood, and its exact Component Assignment.",
+        principle: "Progressive Disclosure Beats One Giant Prompt"
+      },
+      {
+        id: 5,
+        short: "6. Fluid Ripple",
+        kicker: "ACT VI — EVIDENCE & SURGICAL ADAPTATION",
+        title: "Byte-Bound Receipts & Surgical Invalidation Cascade",
+        badge: "CLAIM → DELIVER → ACCEPT → INVALIDATE",
+        multiplier: "SHA-256 Version-Bound",
+        sideTitle: "No Testing Theater — Real Receipts & Fluid Updates",
+        sideBody: "Self-written unit tests before integration create multiplicative mock theater. Instead, builders deliver real evidence, an independent reviewer accepts against the oracle, and if a shared contract evolves, 'invalidate' ripples only to downstream consumers.",
+        principle: "Independent Oracle Acceptance & Surgical Staleness"
+      }
+    ];
+
+    // Book Rung Data for Act 1 (Levels 0..6)
+    const BOOK_RUNGS = [
+      {
+        level: 0,
+        name: "1. Basic Idea",
+        count: "1 Spark",
+        ratio: "1x",
+        quality: "Raw Premise Seed",
+        bookSample: "IDEA SEED:\n“A lone archivist discovers that cities are living programs whose buildings can be recompiled by rewriting their founding charters.”",
+        softEquiv: "User Idea + Reference Source ('Monkey Bars')",
+        cli: "Inspect existing assets & define target outcome"
+      },
+      {
+        level: 1,
+        name: "2. Synopsis",
+        count: "1 Steered Synopsis",
+        ratio: "5x",
+        quality: "Human-Steered & Approved Arc",
+        bookSample: "ENHANCED SYNOPSIS (Human + AI Loop ✓):\nIn a decaying clockwork metropolis, Archivist Lyra uncovers the Root Charter. Across three acts, she learns its syntax (Act I), tests a district rebuild that triggers a cascade (Act II), and re-architects the city from the bottom up (Act III).",
+        softEquiv: "Reviewed project.json Brief & FRAME.md",
+        cli: "python fluid.py validate project.json"
+      },
+      {
+        level: 2,
+        name: "3. Acts",
+        count: "3 Structural Acts",
+        ratio: "15x",
+        quality: "Arc Pacing & Turning Points Locked",
+        bookSample: "ACT I: The Foundational Schema (Ch 1–4)\nACT II: The Cascading Fault (Ch 5–8)\nACT III: Bottom-Up Reconstruction (Ch 9–12)\n[Each Act generated, edited & approved to quality standard ✓]",
+        softEquiv: "Major Subsystems / Areas (model, frame, state, cli)",
+        cli: "python fluid.py frame project.json target --apply"
+      },
+      {
+        level: 3,
+        name: "4. Chapters",
+        count: "12 Coherent Chapters",
+        ratio: "60x",
+        quality: "Scene Continuity & State Contracts",
+        bookSample: "CHAPTER 4 — The Boundary Contract:\n• Inputs: Lyra holds the unverified District III ledger.\n• Obligation: Prove the Aqueduct module fails because of a corrupted upstream signature.\n• Handoff: Leads directly into Act II's district lockdown.",
+        softEquiv: "Modules with MODULE.md Contracts & Disjoint Ownership",
+        cli: "python fluid.py context target --module frame"
+      },
+      {
+        level: 4,
+        name: "5. Pages",
+        count: "180 Structured Pages",
+        ratio: "450x",
+        quality: "Dramatic Beats & Spatial Blocking",
+        bookSample: "PAGE 62 BEAT SHEET:\n1. Lyra enters the Vault of Hashes.\n2. She compares the bronze plate against the live water-gate behavior.\n3. The mismatch localizes the fault to a single valve contract.",
+        softEquiv: "Component Files & Concrete Interface Signatures",
+        cli: "python fluid.py claim target frame --actor builder-1"
+      },
+      {
+        level: 5,
+        name: "6. Paragraphs",
+        count: "900 Paragraphs",
+        ratio: "2,700x",
+        quality: "Rhythm, Voice & Causal Logic",
+        bookSample: "PARAGRAPH 4.62.2:\nShe slid the brass caliper across the ledger's third column. Every downstream street had flooded not because the masonry was weak, but because the upstream intake contract declared liters where the reservoir delivered gallons.",
+        softEquiv: "Atomic Functions & Verified State Transitions",
+        cli: "python fluid.py deliver target frame --actor builder-1 --evidence ev.md"
+      },
+      {
+        level: 6,
+        name: "7. Verified Deliverables",
+        count: "Verified Module Deliverables",
+        ratio: "Module-Scoped",
+        quality: "Every Word Intentional & Verified",
+        bookSample: "FINAL LEAF SENTENCE & WORDS:\n“Fix the boundary,” Lyra whispered, “and the city heals itself.”\n[Every word intentional — anchored by the 6 structural layers above ✓]",
+        softEquiv: "SHA-256 Verified Bytes & Connected Runtime Acceptance",
+        cli: "python fluid.py accept target frame --actor reviewer-2 --evidence rev.md"
+      }
+    ];
+
+    // Software Bottom-Up Component Tree for Act 3
+    const SOFT_COMPONENTS = {
+      system: {
+        id: "sys-root",
+        name: "FluidSoftware v0.1",
+        sub: "Accepted Whole System",
+        book: "Finished, Published Book (All Acts Connected)",
+        soft: "Verified Portable CLI (accepted=4, stale=0)",
+        cli: "python fluid.py verify workspaces/foundation-v1 --json"
+      },
+      modules: [
+        {
+          id: "mod-model",
+          name: "fluid/model.py",
+          role: "Schema & Safe Paths",
+          book: "Act I — World Rules & Foundational Vocabulary",
+          soft: "Module: Brief validation, canonical SHA-256, safe path guards",
+          cli: "python fluid.py context target --module model"
+        },
+        {
+          id: "mod-frame",
+          name: "fluid/frame.py",
+          role: "Frame & Context",
+          book: "Act II — Structural Outliner & Scene Cards",
+          soft: "Module: Preflight plan, atomic file materialization, 3-tier context",
+          cli: "python fluid.py context target --module frame"
+        },
+        {
+          id: "mod-state",
+          name: "fluid/state.py",
+          role: "State & Evidence",
+          book: "Act III — Continuity Ledger & Editorial Review",
+          soft: "Module: Exclusive lock, claim/deliver/accept, staleness & invalidate",
+          cli: "python fluid.py context target --module state"
+        }
+      ],
+      leaves: [
+        { id: "leaf-1", mod: 0, name: "validate_brief()", quality: "Schema + DAG cycle check", book: "Chapter/Paragraph: Premise consistency rule" },
+        { id: "leaf-2", mod: 0, name: "safe_relative()", quality: "Rejects traversal & symlinks", book: "Paragraph/Sentence: Boundary guard clause" },
+        { id: "leaf-3", mod: 0, name: "canonical_digest()", quality: "Deterministic UTF-8 SHA-256", book: "Intentional Word: Exact lexical identity" },
+        { id: "leaf-4", mod: 1, name: "plan_frame()", quality: "Read-only preflight & conflict check", book: "Chapter Plan: Dry-run scene layout" },
+        { id: "leaf-5", mod: 1, name: "apply_frame()", quality: "Atomic create, never overwrites", book: "Scene Draft: Materialize chapter homes" },
+        { id: "leaf-6", mod: 1, name: "render_context()", quality: "Scoped Whole/Area/Unit view", book: "Scene Brief: Focused writer prompt" },
+        { id: "leaf-7", mod: 2, name: "state_lock()", quality: "Exclusive .fluid/state.lock", book: "Single-Editor Rule: No overlapping edits" },
+        { id: "leaf-8", mod: 2, name: "transition()", quality: "Byte-bound deliver & accept", book: "Editorial Pass: Independent quality sign-off" },
+        { id: "leaf-9", mod: 2, name: "invalidate()", quality: "Downstream consumer ripple", book: "Continuity Update: Flag affected scenes" }
+      ]
+    };
+
+    // =========================================================================
+    // RUNTIME ANIMATION STATE
+    // =========================================================================
+    let currentAct = 0;
+    let isPlaying = true;
+    let playbackSpeed = 1.0;
+    let actProgress = 0; // 0.0 to 1.0 within current act
+    let lastTimestamp = performance.now();
+
+    // Interactive overrides per act
+    let manualBookRung = null;      // null = follow animation, or 0..6
+    let bridgeMode = "split";       // "book", "split", "software"
+    let bottomUpPhase = null;       // null = auto, or "decompose" | "leaves" | "modules" | "whole"
+    let contextZoomTier = null;     // null = auto, or 0 (Whole), 1 (Area), 2 (Assignment)
+    let invalidateTriggered = null; // null = auto, or boolean
+
+    const ACT_DURATION_MS = 11000; // 11 seconds per act at 1x
+
+    // =========================================================================
+    // DOM REFERENCES
+    // =========================================================================
+    const sceneRoot = document.getElementById("sceneRoot");
+    const actTabs = document.getElementById("actTabs");
+    const actKicker = document.getElementById("actKicker");
+    const actTitle = document.getElementById("actTitle");
+    const contextualControls = document.getElementById("contextualControls");
+    const timeReadout = document.getElementById("timeReadout");
+    const scrubberFill = document.getElementById("scrubberFill");
+    const scrubberTrack = document.getElementById("scrubberTrack");
+    const phaseSubStatus = document.getElementById("phaseSubStatus");
+
+    const sideCardBadge = document.getElementById("sideCardBadge");
+    const multiplierReadout = document.getElementById("multiplierReadout");
+    const sideCardTitle = document.getElementById("sideCardTitle");
+    const sideCardBody = document.getElementById("sideCardBody");
+    const artifactPreviewHeader = document.getElementById("artifactPreviewHeader");
+    const artifactPreviewRung = document.getElementById("artifactPreviewRung");
+    const artifactPreviewContent = document.getElementById("artifactPreviewContent");
+
+    const inspStatusBadge = document.getElementById("inspStatusBadge");
+    const inspTitle = document.getElementById("inspTitle");
+    const inspSubtitle = document.getElementById("inspSubtitle");
+    const inspBookRole = document.getElementById("inspBookRole");
+    const inspSoftRole = document.getElementById("inspSoftRole");
+    const inspCliCmd = document.getElementById("inspCliCmd");
+    const inspPrinciple = document.getElementById("inspPrinciple");
+
+    // =========================================================================
+    // INITIALIZE TABS & CONTROLS
+    // =========================================================================
+    function renderTabs() {
+      actTabs.innerHTML = ACTS.map((act, idx) => {
+        const active = idx === currentAct;
+        return `
+          <button
+            onclick="selectAct(${idx})"
+            class="text-left px-3 py-2 rounded-lg border transition flex flex-col justify-between ${
+              active
+                ? "bg-cyan-500/15 border-cyan-400 text-[var(--foreground)] shadow-sm"
+                : "bg-[var(--background)] border-[var(--border)] text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+            }"
+          >
+            <div class="flex items-center justify-between w-full">
+              <span class="text-xs font-bold ${active ? "text-cyan-400" : ""}">${act.short}</span>
+              ${active ? '<span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>' : ""}
+            </div>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function updateInspector(info) {
+      inspTitle.textContent = info.title;
+      inspSubtitle.textContent = info.subtitle;
+      inspBookRole.textContent = info.book;
+      inspSoftRole.textContent = info.soft;
+      inspCliCmd.textContent = info.cli;
+      inspStatusBadge.textContent = info.status || "INSPECTED NODE";
+    }
+
+    window.inspectNode = function(title, subtitle, book, soft, cli, status) {
+      updateInspector({ title, subtitle, book, soft, cli, status });
+    };
+
+    window.selectAct = function(idx) {
+      currentAct = (idx + ACTS.length) % ACTS.length;
+      actProgress = 0;
+      manualBookRung = null;
+      bottomUpPhase = null;
+      contextZoomTier = null;
+      invalidateTriggered = null;
+      syncHeaderAndControls();
+      renderTabs();
+      renderCurrentScene();
+    };
+
+    window.setManualBookRung = function(val) {
+      manualBookRung = val === "auto" ? null : parseInt(val, 10);
+      syncContextualControls();
+      renderCurrentScene();
+    };
+
+    window.setBridgeMode = function(mode) {
+      bridgeMode = mode;
+      syncContextualControls();
+      renderCurrentScene();
+    };
+
+    window.setBottomUpPhase = function(phase) {
+      bottomUpPhase = phase === "auto" ? null : phase;
+      syncContextualControls();
+      renderCurrentScene();
+    };
+
+    window.setContextZoomTier = function(tier) {
+      contextZoomTier = tier === "auto" ? null : parseInt(tier, 10);
+      syncContextualControls();
+      renderCurrentScene();
+    };
+
+    window.toggleInvalidateSim = function(state) {
+      invalidateTriggered = state;
+      syncContextualControls();
+      renderCurrentScene();
+    };
+
+    function syncContextualControls() {
+      if (currentAct === 0) {
+        const activeRung = manualBookRung !== null ? manualBookRung : Math.min(6, Math.floor(actProgress * 7));
+        contextualControls.innerHTML = `
+          <div class="flex items-center gap-1.5 bg-[var(--background)] border border-[var(--border)] rounded-lg px-2.5 py-1">
+            <span class="text-xs text-[var(--muted-foreground)]">Resolution Rung:</span>
+            <input type="range" min="0" max="6" value="${activeRung}"
+              oninput="setManualBookRung(this.value)"
+              class="w-24 accent-cyan-400 cursor-pointer" />
+            <button onclick="setManualBookRung('auto')" class="text-xs px-2 py-0.5 rounded ${manualBookRung === null ? 'bg-cyan-500/20 text-cyan-400 font-semibold' : 'text-[var(--muted-foreground)]'}">
+              Auto
+            </button>
+          </div>
+        `;
+      } else if (currentAct === 1) {
+        contextualControls.innerHTML = `
+          <div class="flex items-center gap-1 bg-[var(--background)] border border-[var(--border)] rounded-lg p-1">
+            <button onclick="setBridgeMode('book')" class="px-2.5 py-1 rounded text-xs font-medium ${bridgeMode === 'book' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-[var(--muted-foreground)]'}">📖 Book Hierarchy</button>
+            <button onclick="setBridgeMode('split')" class="px-2.5 py-1 rounded text-xs font-medium ${bridgeMode === 'split' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' : 'text-[var(--muted-foreground)]'}">⚡ Morph Bridge</button>
+            <button onclick="setBridgeMode('software')" class="px-2.5 py-1 rounded text-xs font-medium ${bridgeMode === 'software' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'text-[var(--muted-foreground)]'}">⚙️ Software Hierarchy</button>
+          </div>
+        `;
+      } else if (currentAct === 2) {
+        const p = bottomUpPhase || "auto";
+        contextualControls.innerHTML = `
+          <div class="flex items-center gap-1 bg-[var(--background)] border border-[var(--border)] rounded-lg p-1">
+            <button onclick="setBottomUpPhase('auto')" class="px-2 py-1 rounded text-xs ${p === 'auto' ? 'bg-cyan-500/20 text-cyan-300 font-semibold' : 'text-[var(--muted-foreground)]'}">Auto Cycle</button>
+            <button onclick="setBottomUpPhase('decompose')" class="px-2 py-1 rounded text-xs ${p === 'decompose' ? 'bg-cyan-500/20 text-cyan-300 font-semibold' : 'text-[var(--muted-foreground)]'}">1. Top-Down Split</button>
+            <button onclick="setBottomUpPhase('leaves')" class="px-2 py-1 rounded text-xs ${p === 'leaves' ? 'bg-amber-500/20 text-amber-300 font-semibold' : 'text-[var(--muted-foreground)]'}">2. Leaf Quality</button>
+            <button onclick="setBottomUpPhase('modules')" class="px-2 py-1 rounded text-xs ${p === 'modules' ? 'bg-emerald-500/20 text-emerald-300 font-semibold' : 'text-[var(--muted-foreground)]'}">3. Assemble Modules</button>
+            <button onclick="setBottomUpPhase('whole')" class="px-2 py-1 rounded text-xs ${p === 'whole' ? 'bg-emerald-500/20 text-emerald-300 font-semibold' : 'text-[var(--muted-foreground)]'}">4. Verified Whole</button>
+          </div>
+        `;
+      } else if (currentAct === 4) {
+        const t = contextZoomTier === null ? "auto" : contextZoomTier;
+        contextualControls.innerHTML = `
+          <div class="flex items-center gap-1 bg-[var(--background)] border border-[var(--border)] rounded-lg p-1">
+            <button onclick="setContextZoomTier('auto')" class="px-2 py-1 rounded text-xs ${t === 'auto' ? 'bg-cyan-500/20 text-cyan-300 font-semibold' : 'text-[var(--muted-foreground)]'}">Auto Zoom</button>
+            <button onclick="setContextZoomTier(0)" class="px-2 py-1 rounded text-xs ${t === 0 ? 'bg-cyan-500/20 text-cyan-300 font-semibold' : 'text-[var(--muted-foreground)]'}">Whole Map</button>
+            <button onclick="setContextZoomTier(1)" class="px-2 py-1 rounded text-xs ${t === 1 ? 'bg-amber-500/20 text-amber-300 font-semibold' : 'text-[var(--muted-foreground)]'}">Area View</button>
+            <button onclick="setContextZoomTier(2)" class="px-2 py-1 rounded text-xs ${t === 2 ? 'bg-emerald-500/20 text-emerald-300 font-semibold' : 'text-[var(--muted-foreground)]'}">Leaf Assignment</button>
+          </div>
+        `;
+      } else if (currentAct === 5) {
+        contextualControls.innerHTML = `
+          <div class="flex items-center gap-1.5 bg-[var(--background)] border border-[var(--border)] rounded-lg p-1">
+            <button onclick="toggleInvalidateSim(false)" class="px-2.5 py-1 rounded text-xs font-medium ${invalidateTriggered === false ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'text-[var(--muted-foreground)]'}">✓ All Accepted</button>
+            <button onclick="toggleInvalidateSim(true)" class="px-2.5 py-1 rounded text-xs font-medium ${invalidateTriggered === true ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'text-[var(--muted-foreground)]'}">⚡ Mutate Contract & Invalidate</button>
+          </div>
+        `;
+      } else {
+        contextualControls.innerHTML = `
+          <span class="text-xs font-mono text-[var(--muted-foreground)] px-2 py-1 rounded bg-[var(--background)] border border-[var(--border)]">
+            python fluid.py frame project.json target --apply
+          </span>
+        `;
+      }
+    }
+
+    function syncHeaderAndControls() {
+      const act = ACTS[currentAct];
+      actKicker.textContent = act.kicker;
+      actTitle.textContent = act.title;
+      sideCardBadge.textContent = act.badge;
+      multiplierReadout.textContent = act.multiplier;
+      sideCardTitle.textContent = act.sideTitle;
+      sideCardBody.textContent = act.sideBody;
+      inspPrinciple.textContent = act.principle;
+      syncContextualControls();
+    }
+
+    // =========================================================================
+    // SCENE 1: BOOK BUILDER — RECURSIVE EXPANSION CASCADE (IDEA -> WORDS)
+    // =========================================================================
+    function renderAct1BookCascade(p) {
+      const activeRung = manualBookRung !== null ? manualBookRung : Math.min(6, Math.floor(p * 7));
+      const rungData = BOOK_RUNGS[activeRung];
+      const subPulse = (p * 7) % 1;
+
+      phaseSubStatus.textContent = `Rung ${activeRung + 1}/7: ${rungData.name.split('. ')[1]}`;
+      artifactPreviewHeader.textContent = `BOOK BUILDER — ${rungData.name.toUpperCase()}`;
+      artifactPreviewRung.textContent = `${rungData.count} (${rungData.ratio})`;
+      artifactPreviewContent.textContent = rungData.bookSample;
+
+      // Left column: The 7 Hierarchical Rungs of the Book Pyramid (x: 40..470)
+      // Right column: Iterative Generation + Quality Gate Loop & Branching Tree (x: 500..890)
+      let svg = `
+        <!-- Section Headers inside SVG -->
+        <text x="36" y="30" fill="#38bdf8" font-size="12" font-weight="700" letter-spacing="1">
+          TOP-DOWN RECURSIVE EXPANSION PYRAMID (7 LEVELS)
+        </text>
+        <text x="515" y="30" fill="#fbbf24" font-size="12" font-weight="700" letter-spacing="1">
+          GENERATE, ENHANCE &amp; QUALITY-GATE LOOP
+        </text>
+      `;
+
+      // Draw 7 Rungs on the Left as an Expanding Stepped Pyramid
+      const rungWidths = [160, 210, 260, 310, 360, 405, 445];
+      const centerLeft = 258;
+
+      for (let i = 0; i < 7; i++) {
+        const r = BOOK_RUNGS[i];
+        const w = rungWidths[i];
+        const x = centerLeft - w / 2;
+        const y = 46 + i * 64;
+        const isReached = i <= activeRung;
+        const isCurrent = i === activeRung;
+
+        const fillGrad = isCurrent
+          ? "url(#gradAmber)"
+          : isReached
+          ? "url(#gradEmerald)"
+          : "rgba(148, 163, 184, 0.06)";
+        const strokeCol = isCurrent
+          ? "#fbbf24"
+          : isReached
+          ? "#10b981"
+          : "rgba(148, 163, 184, 0.25)";
+        const strokeW = isCurrent ? 2.2 : 1.3;
+
+        // Connector from parent rung
+        if (i > 0) {
+          const prevY = 46 + (i - 1) * 64 + 46;
+          const prevW = rungWidths[i - 1];
+          // Fan-out lines showing 1 -> N expansion
+          const branches = [-0.28, 0, 0.28];
+          branches.forEach(offset => {
+            const sx = centerLeft + prevW * offset * 0.6;
+            const ex = centerLeft + w * offset * 0.8;
+            svg += `
+              <line x1="${sx}" y1="${prevY}" x2="${ex}" y2="${y}"
+                stroke="${isReached ? '#22d3ee' : 'rgba(148,163,184,0.18)'}"
+                stroke-width="${isCurrent ? '1.8' : '1.2'}"
+                stroke-dasharray="${isCurrent ? '4 4' : 'none'}"
+                class="${isCurrent ? 'vec-dash-flow' : ''}" />
+            `;
+          });
+        }
+
+        // Visual dots inside each rung representing multiplicity (1 -> 3 -> 9 -> 27...)
+        const dotCount = Math.min(18, Math.pow(2, i));
+        let dotsSvg = "";
+        for (let d = 0; d < dotCount; d++) {
+          const dx = x + 16 + (d * 8);
+          if (dx < x + w - 120) {
+            dotsSvg += `<circle cx="${dx}" cy="${y + 35}" r="2.2" fill="${isCurrent ? '#fbbf24' : isReached ? '#34d399' : '#64748b'}" opacity="${isReached ? '0.9' : '0.35'}" />`;
+          }
+        }
+
+        const safeName = r.name.replace(/'/g, "\\'");
+        const safeQual = r.quality.replace(/'/g, "\\'");
+        const safeSoft = r.softEquiv.replace(/'/g, "\\'");
+        const safeCli = r.cli.replace(/'/g, "\\'");
+
+        svg += `
+          <g class="vec-node" onclick="setManualBookRung(${i}); inspectNode('${safeName}', '${r.count}', '${safeQual}', '${safeSoft}', '${safeCli}', '${isCurrent ? 'ACTIVE EXPANSION' : isReached ? 'QUALITY LOCKED' : 'PENDING'}')">
+            <rect x="${x}" y="${y}" width="${w}" height="46" rx="9"
+              fill="${fillGrad}" stroke="${strokeCol}" stroke-width="${strokeW}"
+              ${isCurrent ? 'filter="url(#cyanGlow)"' : ''} />
+
+            <!-- Left Rung Title -->
+            <text x="${x + 14}" y="${y + 20}" fill="${isReached ? 'currentColor' : '#94a3b8'}" font-size="13" font-weight="700">
+              ${r.name}
+            </text>
+
+            <!-- Multiplicity Pill on Right -->
+            <text x="${x + w - 12}" y="${y + 20}" text-anchor="end"
+              fill="${isCurrent ? '#fbbf24' : isReached ? '#34d399' : '#64748b'}"
+              font-size="12" font-weight="600" class="mono-text">
+              ${r.count}
+            </text>
+
+            <!-- Quality Sub-caption -->
+            <text x="${x + w - 12}" y="${y + 37}" text-anchor="end"
+              fill="#94a3b8" font-size="12">
+              ${isCurrent ? '⟳ Generating & Editing...' : isReached ? '✓ Quality Standard Met' : 'Awaiting Parent Lock'}
+            </text>
+
+            ${dotsSvg}
+          </g>
+        `;
+      }
+
+      // RIGHT PANEL: The Iterative Refinement Loop at the Active Rung + Live Tree Fan-out
+      const loopCx = 700;
+      const loopCy = 165;
+
+      svg += `
+        <!-- Refinement Loop Card -->
+        <rect x="510" y="46" width="380" height="235" rx="12"
+          fill="rgba(15, 23, 42, 0.35)" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1.2" />
+
+        <text x="530" y="72" fill="currentColor" font-size="13" font-weight="700">
+          Active Rung: ${rungData.name}
+        </text>
+        <text x="870" y="72" text-anchor="end" fill="#fbbf24" font-size="12" font-weight="700" class="mono-text">
+          Scale: ${rungData.ratio}
+        </text>
+
+        <!-- Circular Iterative Loop Diagram -->
+        <!-- Outer dashed orbit -->
+        <circle cx="${loopCx}" cy="${loopCy}" r="66" fill="none" stroke="rgba(56, 189, 248, 0.35)" stroke-width="1.5" stroke-dasharray="6 5" class="vec-spin" />
+        <circle cx="${loopCx}" cy="${loopCy}" r="46" fill="url(#gradCyan)" stroke="#22d3ee" stroke-width="1.8" />
+
+        <text x="${loopCx}" y="${loopCy - 4}" text-anchor="middle" fill="currentColor" font-size="12" font-weight="700">
+          QUALITY
+        </text>
+        <text x="${loopCx}" y="${loopCy + 12}" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">
+          STANDARD ✓
+        </text>
+
+        <!-- 3 Orbiting Step Satellites around the Quality Core -->
+        <!-- Step A: Expand from Parent -->
+        <g transform="translate(532, 102)">
+          <rect x="0" y="0" width="112" height="36" rx="7" fill="url(#gradCyan)" stroke="#38bdf8" stroke-width="1.3" />
+          <text x="56" y="16" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700">1. Expand</text>
+          <text x="56" y="30" text-anchor="middle" fill="currentColor" font-size="12">From Parent</text>
+        </g>
+
+        <!-- Step B: AI Generate & Enhance -->
+        <g transform="translate(760, 102)">
+          <rect x="0" y="0" width="114" height="36" rx="7" fill="url(#gradAmber)" stroke="#fbbf24" stroke-width="1.3" />
+          <text x="57" y="16" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">2. Enhance</text>
+          <text x="57" y="30" text-anchor="middle" fill="currentColor" font-size="12">Generate &amp; Edit</text>
+        </g>
+
+        <!-- Step C: Lock & Cascade Down -->
+        <g transform="translate(632, 236)">
+          <rect x="0" y="0" width="136" height="34" rx="7" fill="url(#gradEmerald)" stroke="#10b981" stroke-width="1.4" />
+          <text x="68" y="21" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">3. Lock &amp; Cascade ▼</text>
+        </g>
+
+        <!-- Curved Flow Arrows between steps -->
+        <path d="M 644 118 Q 700 84 760 118" fill="none" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrowCyan)" />
+        <path d="M 815 138 Q 815 215 768 250" fill="none" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#arrowAmber)" />
+        <path d="M 632 250 Q 585 215 588 138" fill="none" stroke="#34d399" stroke-width="1.8" marker-end="url(#arrowEmerald)" />
+      `;
+
+      // Bottom-Right Card: Visual Fan-Out Multiplier Tree (Synopsis -> Acts -> Chapters -> Words)
+      svg += `
+        <rect x="510" y="298" width="380" height="196" rx="12"
+          fill="rgba(15, 23, 42, 0.35)" stroke="rgba(16, 185, 129, 0.35)" stroke-width="1.2" />
+
+        <text x="530" y="324" fill="#34d399" font-size="12" font-weight="700" letter-spacing="0.8">
+          HIERARCHICAL DECOMPOSITION (STOP AT COHERENT MODULES)
+        </text>
+      `;
+
+      // Render a crisp 4-level mini vector tree inside (x: 530..870, y: 342..468)
+      const rootX = 700, rootY = 344;
+      const actXs = [590, 700, 810], actY = 382;
+      const chapY = 422;
+      const wordY = 460;
+
+      actXs.forEach((ax, aIdx) => {
+        const actActive = activeRung >= 2;
+        svg += `<line x1="${rootX}" y1="${rootY + 8}" x2="${ax}" y2="${actY - 8}" stroke="${actActive ? '#22d3ee' : '#475569'}" stroke-width="1.5" />`;
+
+        [-32, 0, 32].forEach((cOff, cIdx) => {
+          const cx = ax + cOff;
+          const chapActive = activeRung >= 3;
+          svg += `<line x1="${ax}" y1="${actY + 8}" x2="${cx}" y2="${chapY - 6}" stroke="${chapActive ? '#34d399' : '#334155'}" stroke-width="1.2" />`;
+
+          [-10, 0, 10].forEach(wOff => {
+            const wx = cx + wOff;
+            const leafActive = activeRung >= 5;
+            svg += `<line x1="${cx}" y1="${chapY + 5}" x2="${wx}" y2="${wordY - 4}" stroke="${leafActive ? '#fbbf24' : '#1e293b'}" stroke-width="0.9" />`;
+            svg += `<circle cx="${wx}" cy="${wordY}" r="2.8" fill="${activeRung === 6 ? '#fbbf24' : leafActive ? '#34d399' : '#334155'}" />`;
+          });
+
+          svg += `<circle cx="${cx}" cy="${chapY}" r="5" fill="${chapActive ? '#10b981' : '#334155'}" />`;
+        });
+
+        svg += `
+          <rect x="${ax - 28}" y="${actY - 10}" width="56" height="20" rx="5" fill="${actActive ? '#0f766e' : '#1e293b'}" stroke="${actActive ? '#2dd4bf' : '#475569'}" stroke-width="1.2" />
+          <text x="${ax}" y="${actY + 4}" text-anchor="middle" fill="#f8fafc" font-size="12" font-weight="600">Act ${aIdx + 1}</text>
+        `;
+      });
+
+      svg += `
+        <rect x="${rootX - 46}" y="${rootY - 11}" width="92" height="22" rx="6" fill="#0369a1" stroke="#38bdf8" stroke-width="1.5" />
+        <text x="${rootX}" y="${rootY + 4}" text-anchor="middle" fill="#f8fafc" font-size="12" font-weight="700">Synopsis</text>
+
+        <text x="700" y="484" text-anchor="middle" fill="#94a3b8" font-size="12">
+          1 Steered Synopsis → 3 Acts → 12 Chapters → 900 Paragraphs → Verified Module Deliverables
+        </text>
+      `;
+
+      sceneRoot.innerHTML = svg;
+    }
+
+    // =========================================================================
+    // SCENE 2: BOOK <-> SOFTWARE ISOMORPHISM BRIDGE
+    // =========================================================================
+    function renderAct2BookToSoftwareBridge(p) {
+      const pairs = [
+        {
+          book: "1. Idea & Inspiration",
+          bSub: "Premise + genre traditions",
+          soft: "1. Outcome & Reference",
+          sSub: "User goal + 'Monkey Bars' reference repo",
+          bridge: "Anchor the Search Space"
+        },
+        {
+          book: "2. Steered Synopsis",
+          bSub: "Whole-story arc approved by human",
+          soft: "2. Brief & FRAME.md",
+          sSub: "project.json + global capability map",
+          bridge: "High-Leverage Steering"
+        },
+        {
+          book: "3. Three Acts",
+          bSub: "Major narrative phases & turning points",
+          soft: "3. Core Subsystems",
+          sSub: "model, frame, state, cli areas",
+          bridge: "Coarse Architecture"
+        },
+        {
+          book: "4. Chapters & Continuity",
+          bSub: "Scene cards, character state & handoffs",
+          soft: "4. Modules & Contracts",
+          sSub: "MODULE.md, disjoint owns, I/O invariants",
+          bridge: "Information Hiding"
+        },
+        {
+          book: "5. Pages & Paragraphs",
+          bSub: "Coherent dramatic beats & dialogue units",
+          soft: "5. Buildable Components",
+          sSub: "Functions & classes inside agent horizon",
+          bridge: "Optimal Stopping Depth"
+        },
+        {
+          book: "6. Verified Deliverables",
+          bSub: "Every word intentional, edited to standard",
+          soft: "6. Verified Bytes & Receipts",
+          sSub: "SHA-256 evidence + connected acceptance",
+          bridge: "Bottom-Up Quality Lock"
+        }
+      ];
+
+      const activeRow = Math.min(5, Math.floor(p * 6));
+      const rowData = pairs[activeRow];
+
+      phaseSubStatus.textContent = `Mapping Layer ${activeRow + 1}/6`;
+      artifactPreviewHeader.textContent = `ISOMORPHISM — LAYER ${activeRow + 1}`;
+      artifactPreviewRung.textContent = rowData.bridge;
+      artifactPreviewContent.textContent =
+        `BOOK LAYER:     ${rowData.book} (${rowData.bSub})\n` +
+        `SOFTWARE LAYER: ${rowData.soft} (${rowData.sSub})\n` +
+        `SHARED LAW:     ${rowData.bridge}`;
+
+      let svg = `
+        <text x="50" y="32" fill="#fbbf24" font-size="13" font-weight="700" letter-spacing="0.8">
+          📖 THE BOOK BUILDER HIERARCHY
+        </text>
+        <text x="460" y="32" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700" letter-spacing="0.8">
+          ⚡ STRUCTURAL ISOMORPHISM
+        </text>
+        <text x="870" y="32" text-anchor="end" fill="#34d399" font-size="13" font-weight="700" letter-spacing="0.8">
+          ⚙️ FLUIDSOFTWARE HIERARCHY
+        </text>
+      `;
+
+      pairs.forEach((row, idx) => {
+        const y = 52 + idx * 75;
+        const isCurrent = idx === activeRow;
+        const bookOpacity = bridgeMode === "software" ? 0.35 : 1;
+        const softOpacity = bridgeMode === "book" ? 0.35 : 1;
+
+        // Left Card (Book)
+        svg += `
+          <g class="vec-node" opacity="${bookOpacity}"
+             onclick="inspectNode('${row.book} ↔ ${row.soft}', '${row.bridge}', '${row.bSub}', '${row.sSub}', 'python fluid.py frame project.json target --apply', 'MAPPED LAYER ${idx + 1}')">
+            <rect x="36" y="${y}" width="265" height="58" rx="10"
+              fill="${isCurrent ? 'url(#gradAmber)' : 'rgba(148,163,184,0.07)'}"
+              stroke="${isCurrent ? '#fbbf24' : 'rgba(251,191,36,0.35)'}"
+              stroke-width="${isCurrent ? '2.2' : '1.2'}" />
+            <text x="52" y="${y + 24}" fill="currentColor" font-size="13" font-weight="700">${row.book}</text>
+            <text x="52" y="${y + 43}" fill="#94a3b8" font-size="12">${row.bSub}</text>
+          </g>
+        `;
+
+        // Center Morph Bridge Spline + Pill
+        const cy = y + 29;
+        svg += `
+          <path d="M 301 ${cy} C 370 ${cy}, 550 ${cy}, 619 ${cy}"
+            fill="none"
+            stroke="${isCurrent ? '#22d3ee' : 'rgba(56,189,248,0.35)'}"
+            stroke-width="${isCurrent ? '2.5' : '1.4'}"
+            stroke-dasharray="6 5"
+            class="vec-dash-flow" />
+
+          <rect x="366" y="${y + 13}" width="188" height="32" rx="16"
+            fill="${isCurrent ? '#083344' : '#0f172a'}"
+            stroke="${isCurrent ? '#22d3ee' : '#334155'}"
+            stroke-width="${isCurrent ? '1.8' : '1.1'}" />
+          <text x="460" y="${y + 33}" text-anchor="middle"
+            fill="${isCurrent ? '#67e8f9' : '#94a3b8'}" font-size="12" font-weight="600">
+            ${row.bridge}
+          </text>
+        `;
+
+        // Right Card (Software)
+        svg += `
+          <g class="vec-node" opacity="${softOpacity}"
+             onclick="inspectNode('${row.soft}', '${row.bridge}', '${row.bSub}', '${row.sSub}', 'python fluid.py context target', 'SOFTWARE RUNG ${idx + 1}')">
+            <rect x="619" y="${y}" width="265" height="58" rx="10"
+              fill="${isCurrent ? 'url(#gradEmerald)' : 'rgba(148,163,184,0.07)'}"
+              stroke="${isCurrent ? '#10b981' : 'rgba(16,185,129,0.35)'}"
+              stroke-width="${isCurrent ? '2.2' : '1.2'}" />
+            <text x="635" y="${y + 24}" fill="currentColor" font-size="13" font-weight="700">${row.soft}</text>
+            <text x="635" y="${y + 43}" fill="#94a3b8" font-size="12">${row.sSub}</text>
+          </g>
+        `;
+      });
+
+      sceneRoot.innerHTML = svg;
+    }
+
+    // =========================================================================
+    // SCENE 3: TOP-DOWN DECOMPOSITION, BOTTOM-UP HIGH-QUALITY CONSTRUCTION
+    // =========================================================================
+    function renderAct3BottomUpMastery(p) {
+      // Determine current sub-phase:
+      // 0.00 - 0.25: Top-Down Design Decomposition (System -> Modules -> Smallest Leaf Components)
+      // 0.25 - 0.60: Leaf Components built & verified to high quality standards at the bottom
+      // 0.60 - 0.85: Bottom-Up Module Assembly (Verified leaves synthesize into Modules)
+      // 0.85 - 1.00: Whole-System Integration & Oracle Verification
+      let stage = bottomUpPhase;
+      if (!stage) {
+        if (p < 0.25) stage = "decompose";
+        else if (p < 0.62) stage = "leaves";
+        else if (p < 0.84) stage = "modules";
+        else stage = "whole";
+      }
+
+      const stageDescriptions = {
+        decompose: {
+          status: "Phase 1/4: Top-Down Decomposition",
+          previewTitle: "STEP 1 — BREAK DESIGN INTO MODULES & SMALLEST COMPONENTS",
+          previewText: "Top-Down Pass:\nWhole System → 3 Core Modules → 9 Atomic Leaf Components.\nEach leaf component receives a narrow contract, input/output types, and an explicit quality standard before coding begins."
+        },
+        leaves: {
+          status: "Phase 2/4: Bottom-Up Leaf Quality",
+          previewTitle: "STEP 2 — BUILD EACH SMALLEST COMPONENT TO HIGH QUALITY",
+          previewText: "Bottom-Up Construction:\nBuilders focus on one atomic leaf component at a time (validate_brief, safe_relative, plan_frame, state_lock...). Because each piece is small and bounded, every leaf meets strict quality standards."
+        },
+        modules: {
+          status: "Phase 3/4: Bottom-Up Module Assembly",
+          previewTitle: "STEP 3 — ASSEMBLE VERIFIED LEAVES INTO MODULES",
+          previewText: "Upward Synthesis:\nOnce all 3 leaf components under a module pass their quality checks, they snap together cleanly into fluid/model.py, fluid/frame.py, and fluid/state.py without interface mismatch."
+        },
+        whole: {
+          status: "Phase 4/4: Connected System Verified",
+          previewTitle: "STEP 4 — WHOLE PRODUCT INTEGRATED & VERIFIED",
+          previewText: "python fluid.py verify workspaces/foundation-v1 --json\n→ { \"accepted\": 4, \"stale\": 0, \"integrity_issues\": 0 }\nTop-down architecture + bottom-up component quality = zero-drift software."
+        }
+      };
+
+      const desc = stageDescriptions[stage];
+      phaseSubStatus.textContent = desc.status;
+      artifactPreviewHeader.textContent = desc.previewTitle;
+      artifactPreviewRung.textContent = stage.toUpperCase();
+      artifactPreviewContent.textContent = desc.previewText;
+
+      const isLeavesDone = stage === "modules" || stage === "whole";
+      const isLeavesActive = stage === "leaves";
+      const isModulesDone = stage === "whole";
+      const isModulesActive = stage === "modules";
+      const isWholeDone = stage === "whole";
+
+      // How many leaves are verified during the 'leaves' phase
+      const leafProgressCount = isLeavesDone
+        ? 9
+        : isLeavesActive
+        ? (bottomUpPhase === "leaves" ? 9 : Math.max(1, Math.ceil(((p - 0.25) / 0.37) * 9)))
+        : 0;
+
+      let svg = `
+        <!-- Direction Banner Arrows on Left & Right Margins -->
+        <g opacity="${stage === 'decompose' ? '1' : '0.45'}">
+          <line x1="28" y1="65" x2="28" y2="435" stroke="#38bdf8" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrowCyan)" />
+          <text x="20" y="255" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700" transform="rotate(-90, 20, 255)">
+            1. TOP-DOWN DESIGN DECOMPOSITION
+          </text>
+        </g>
+
+        <g opacity="${stage !== 'decompose' ? '1' : '0.45'}">
+          <line x1="892" y1="435" x2="892" y2="65" stroke="#34d399" stroke-width="2.2" stroke-dasharray="5 4" marker-end="url(#arrowEmerald)" />
+          <text x="902" y="255" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700" transform="rotate(90, 902, 255)">
+            2. BOTTOM-UP HIGH-QUALITY BUILD
+          </text>
+        </g>
+      `;
+
+      // Coordinates:
+      // Tier 1 (Top System Node): cx=460, y=42..106
+      // Tier 2 (3 Module Nodes): cx=[185, 460, 735], y=178..248
+      // Tier 3 (9 Smallest Leaf Components): 3 per module, y=340..448
+      const sysX = 320, sysY = 38, sysW = 280, sysH = 66;
+      const modCenters = [185, 460, 735];
+      const modY = 178, modW = 220, modH = 68;
+      const leafY = 342, leafW = 84, leafH = 98;
+
+      // Draw Edges between System <-> Modules and Modules <-> Leaves
+      modCenters.forEach((mcx, mIdx) => {
+        const upActive = isModulesDone;
+        const downActive = stage === "decompose";
+
+        svg += `
+          <path d="M 460 ${sysY + sysH} C 460 142, ${mcx} 142, ${mcx} ${modY}"
+            fill="none"
+            stroke="${upActive ? '#10b981' : downActive ? '#38bdf8' : '#475569'}"
+            stroke-width="${upActive || downActive ? '2.4' : '1.4'}"
+            stroke-dasharray="6 5"
+            class="${upActive ? 'vec-dash-up' : downActive ? 'vec-dash-flow' : ''}" />
+        `;
+
+        // 3 Leaves under each module
+        [-88, 0, 88].forEach((offset, lSubIdx) => {
+          const lIdx = mIdx * 3 + lSubIdx;
+          const lcx = mcx + offset;
+          const leafVerified = lIdx < leafProgressCount;
+          const upFlow = leafVerified && (isModulesActive || isModulesDone);
+
+          svg += `
+            <path d="M ${mcx} ${modY + modH} C ${mcx} 295, ${lcx} 295, ${lcx} ${leafY}"
+              fill="none"
+              stroke="${upFlow ? '#10b981' : leafVerified ? '#fbbf24' : downActive ? '#38bdf8' : '#334155'}"
+              stroke-width="${upFlow || leafVerified ? '2' : '1.3'}"
+              stroke-dasharray="5 4"
+              class="${upFlow ? 'vec-dash-up' : downActive ? 'vec-dash-flow' : ''}" />
+          `;
+        });
+      });
+
+      // Draw Tier 1: Whole System Node
+      svg += `
+        <g class="vec-node"
+           onclick="inspectNode('${SOFT_COMPONENTS.system.name}', '${SOFT_COMPONENTS.system.sub}', '${SOFT_COMPONENTS.system.book}', '${SOFT_COMPONENTS.system.soft}', '${SOFT_COMPONENTS.system.cli}', '${isWholeDone ? 'ACCEPTED SYSTEM ✓' : 'ARCHITECTURAL FRAME'}')">
+          <rect x="${sysX}" y="${sysY}" width="${sysW}" height="${sysH}" rx="12"
+            fill="${isWholeDone ? 'url(#gradEmerald)' : 'url(#gradCyan)'}"
+            stroke="${isWholeDone ? '#10b981' : '#38bdf8'}"
+            stroke-width="${isWholeDone ? '2.6' : '1.8'}"
+            ${isWholeDone ? 'filter="url(#emeraldGlow)"' : ''} />
+          <text x="460" y="${sysY + 26}" text-anchor="middle" fill="currentColor" font-size="14" font-weight="700">
+            ${SOFT_COMPONENTS.system.name} — Whole Product
+          </text>
+          <text x="460" y="${sysY + 47}" text-anchor="middle" fill="${isWholeDone ? '#34d399' : '#38bdf8'}" font-size="12" class="mono-text">
+            ${isWholeDone ? '✓ Bottom-Up Assembly Complete (accepted=4, stale=0)' : '1. Top-Down Synopsis / System Frame'}
+          </text>
+        </g>
+      `;
+
+      // Draw Tier 2: 3 Module Nodes
+      SOFT_COMPONENTS.modules.forEach((mod, mIdx) => {
+        const mcx = modCenters[mIdx];
+        const mx = mcx - modW / 2;
+        const modReady = isModulesActive || isModulesDone;
+
+        svg += `
+          <g class="vec-node"
+             onclick="inspectNode('${mod.name}', '${mod.role}', '${mod.book}', '${mod.soft}', '${mod.cli}', '${modReady ? 'MODULE ASSEMBLED ✓' : 'MODULE CONTRACT PINNED'}')">
+            <rect x="${mx}" y="${modY}" width="${modW}" height="${modH}" rx="10"
+              fill="${modReady ? 'url(#gradEmerald)' : 'url(#gradCyan)'}"
+              stroke="${modReady ? '#10b981' : '#38bdf8'}"
+              stroke-width="${modReady ? '2.2' : '1.5'}" />
+            <text x="${mcx}" y="${modY + 25}" text-anchor="middle" fill="currentColor" font-size="13" font-weight="700" class="mono-text">
+              ${mod.name}
+            </text>
+            <text x="${mcx}" y="${modY + 44}" text-anchor="middle" fill="#94a3b8" font-size="12">
+              ${mod.role}
+            </text>
+            <text x="${mcx}" y="${modY + 60}" text-anchor="middle" fill="${modReady ? '#34d399' : '#38bdf8'}" font-size="12" font-weight="600">
+              ${modReady ? '▲ Assembled from 3 Verified Leaves' : '▼ Split into 3 Atomic Components'}
+            </text>
+          </g>
+        `;
+      });
+
+      // Draw Tier 3: 9 Atomic Leaf Components at the Bottom
+      SOFT_COMPONENTS.leaves.forEach((leaf, lIdx) => {
+        const mIdx = leaf.mod;
+        const lSubIdx = lIdx % 3;
+        const mcx = modCenters[mIdx];
+        const lcx = mcx + (lSubIdx - 1) * 88;
+        const lx = lcx - leafW / 2;
+
+        const isVerified = lIdx < leafProgressCount;
+        const isCurrentlyBuilding = isLeavesActive && lIdx === leafProgressCount - 1;
+
+        const fill = isCurrentlyBuilding
+          ? "url(#gradAmber)"
+          : isVerified
+          ? "url(#gradEmerald)"
+          : "rgba(148,163,184,0.08)";
+        const stroke = isCurrentlyBuilding
+          ? "#fbbf24"
+          : isVerified
+          ? "#10b981"
+          : "#475569";
+
+        svg += `
+          <g class="vec-node"
+             onclick="inspectNode('${leaf.name}', 'Atomic Leaf Component #${lIdx + 1}', '${leaf.book}', 'Quality Standard: ${leaf.quality}', 'python fluid.py deliver target ${SOFT_COMPONENTS.modules[mIdx].name.split('/')[1].replace('.py','')} --actor builder-${mIdx+1}', '${isVerified ? 'HIGH QUALITY VERIFIED ✓' : 'PLANNED LEAF'}')">
+            <rect x="${lx}" y="${leafY}" width="${leafW}" height="${leafH}" rx="8"
+              fill="${fill}" stroke="${stroke}" stroke-width="${isCurrentlyBuilding ? '2.2' : '1.4'}" />
+
+            <!-- Quality Ring Badge at top of leaf card -->
+            <circle cx="${lcx}" cy="${leafY + 24}" r="12"
+              fill="${isVerified ? 'rgba(16,185,129,0.2)' : 'rgba(15,23,42,0.5)'}"
+              stroke="${stroke}" stroke-width="1.6" />
+            <text x="${lcx}" y="${leafY + 28}" text-anchor="middle"
+              fill="${isCurrentlyBuilding ? '#fbbf24' : isVerified ? '#34d399' : '#94a3b8'}"
+              font-size="12" font-weight="700">
+              ${isVerified ? '✓' : lIdx + 1}
+            </text>
+
+            <!-- Function Name -->
+            <text x="${lcx}" y="${leafY + 58}" text-anchor="middle" fill="currentColor" font-size="12" font-weight="600" class="mono-text">
+              ${leaf.name.replace('()', '')}
+            </text>
+
+            <!-- Quality Tag -->
+            <text x="${lcx}" y="${leafY + 80}" text-anchor="middle"
+              fill="${isCurrentlyBuilding ? '#fbbf24' : isVerified ? '#34d399' : '#64748b'}"
+              font-size="12" font-weight="600">
+              ${isVerified ? 'HQ Locked' : 'Stub'}
+            </text>
+          </g>
+        `;
+      });
+
+      // Bottom Caption Strip
+      svg += `
+        <rect x="65" y="462" width="790" height="40" rx="8" fill="rgba(15,23,42,0.55)" stroke="rgba(56,189,248,0.25)" />
+        <text x="460" y="486" text-anchor="middle" fill="currentColor" font-size="12" font-weight="600">
+          Bottom-Up Module Assembly: Each smallest component is trivial to build &amp; verify in isolation, then snaps into its parent module contract.
+        </text>
+      `;
+
+      sceneRoot.innerHTML = svg;
+    }
+
+    // =========================================================================
+    // SCENE 4: MONKEY BARS & RAPID FRAME MATERIALIZATION (fluid.py frame)
+    // =========================================================================
+    function renderAct4MonkeyBarsFrame(p) {
+      phaseSubStatus.textContent = p < 0.4 ? "Inspecting Reference & Brief..." : "Materializing Native Frame & Contracts";
+      artifactPreviewHeader.textContent = "FLUID.PY FRAME --APPLY";
+      artifactPreviewRung.textContent = "0 Conflicts • Atomic";
+      artifactPreviewContent.textContent =
+        `$ python fluid.py frame project.json workspaces/app --apply\n` +
+        `Created .fluid/project.json, .fluid/state.json, FRAME.md\n` +
+        `Materialized 4 native module homes + MODULE.md contracts\n` +
+        `Separated depends_on (semantic) vs build_after (dispatch gate)`;
+
+      const svg = `
+        <!-- Top Bar: Reference ("Monkey Bars") + Brief -> fluid.py frame -->
+        <text x="460" y="28" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700" letter-spacing="0.8">
+          ERECTING THE “MONKEY BARS” — REFERENCE ORACLE + NATIVE MODULE FRAME
+        </text>
+
+        <!-- Left Input: Reference Source ("Monkey Bars") -->
+        <g class="vec-node" onclick="inspectNode('Reference Source (Monkey Bars)', 'Executable Oracle & Structural Precedent', 'Classic Exemplar / Source Research Corpus', 'Pinned reference implementation (e.g. tetr.js or prior engine) with SHA-256 manifest', 'Inspect reuse/wrap/adapt/reference-only before writing stubs', 'ORACLE ANCHOR')">
+          <rect x="45" y="48" width="240" height="72" rx="10" fill="url(#gradAmber)" stroke="#fbbf24" stroke-width="1.8" />
+          <text x="165" y="74" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700">1. Reference (“Monkey Bars”)</text>
+          <text x="165" y="94" text-anchor="middle" fill="currentColor" font-size="12">Known-good behavior &amp; patterns</text>
+          <text x="165" y="111" text-anchor="middle" fill="#94a3b8" font-size="12" class="mono-text">sha256 pinned • read-only oracle</text>
+        </g>
+
+        <!-- Right Input: Reviewed project.json Brief -->
+        <g class="vec-node" onclick="inspectNode('Reviewed project.json Brief', 'Declarative Architecture & Native Starter Files', 'Approved Book Synopsis & Chapter Outline', 'Defines outcome, modules, disjoint owns, depends_on, build_after, and starter artifacts', 'python fluid.py validate project.json', 'SCHEMA V1 BRIEF')">
+          <rect x="635" y="48" width="240" height="72" rx="10" fill="url(#gradCyan)" stroke="#38bdf8" stroke-width="1.8" />
+          <text x="755" y="74" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700">2. Reviewed project.json</text>
+          <text x="755" y="94" text-anchor="middle" fill="currentColor" font-size="12">Outcome + contracts + starter stubs</text>
+          <text x="755" y="111" text-anchor="middle" fill="#94a3b8" font-size="12" class="mono-text">disjoint owns • no cycle DAG</text>
+        </g>
+
+        <!-- Center Hub: fluid.py frame --apply -->
+        <g class="vec-node" onclick="inspectNode('fluid.py frame --apply', 'Safe Preflight & Atomic Materialization', 'Binding the Book Outline & Chapter Folders', 'Creates FRAME.md, .fluid/state.json, and per-module MODULE.md without overwriting user work', 'python fluid.py frame project.json target --apply', 'FRAME ENGINE')">
+          <rect x="345" y="48" width="230" height="72" rx="12" fill="url(#gradEmerald)" stroke="#10b981" stroke-width="2.2" filter="url(#emeraldGlow)" />
+          <text x="460" y="74" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" class="mono-text">fluid.py frame --apply</text>
+          <text x="460" y="94" text-anchor="middle" fill="currentColor" font-size="12">Materializes Native Workspace</text>
+          <text x="460" y="111" text-anchor="middle" fill="#34d399" font-size="12" class="mono-text">FRAME.md + .fluid/state.json</text>
+        </g>
+
+        <line x1="285" y1="84" x2="345" y2="84" stroke="#fbbf24" stroke-width="2" stroke-dasharray="5 4" class="vec-dash-flow" marker-end="url(#arrowAmber)" />
+        <line x1="635" y1="84" x2="575" y2="84" stroke="#38bdf8" stroke-width="2" stroke-dasharray="5 4" class="vec-dash-flow" marker-end="url(#arrowCyan)" />
+
+        <!-- The "Jungle Gym" Structural Grid Below (y: 155..475) -->
+        <rect x="45" y="152" width="830" height="335" rx="14" fill="rgba(15,23,42,0.4)" stroke="rgba(56,189,248,0.35)" stroke-width="1.5" />
+
+        <!-- Horizontal & Vertical Rungs of the Jungle Gym -->
+        <line x1="75" y1="205" x2="845" y2="205" stroke="rgba(56,189,248,0.25)" stroke-width="3" />
+        <line x1="75" y1="355" x2="845" y2="355" stroke="rgba(56,189,248,0.25)" stroke-width="3" />
+        <line x1="175" y1="175" x2="175" y2="455" stroke="rgba(56,189,248,0.2)" stroke-width="3" />
+        <line x1="460" y1="175" x2="460" y2="455" stroke="rgba(56,189,248,0.2)" stroke-width="3" />
+        <line x1="745" y1="175" x2="745" y2="455" stroke="rgba(56,189,248,0.2)" stroke-width="3" />
+
+        <!-- Module 1: Foundation / Core Model (Prerequisite) -->
+        <g class="vec-node" onclick="inspectNode('Module: model (Provider)', 'Owns: fluid/model.py', 'Act I — Core Rules & Terminology', 'Provides validated spec dict, safe path resolution, and canonical SHA-256 digests', 'python fluid.py claim target model --actor builder-1', 'READY IMMEDIATELY')">
+          <rect x="75" y="175" width="200" height="90" rx="10" fill="url(#gradEmerald)" stroke="#10b981" stroke-width="2" />
+          <text x="175" y="200" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" class="mono-text">areas/model/MODULE.md</text>
+          <text x="175" y="220" text-anchor="middle" fill="currentColor" font-size="12">Owns: fluid/model.py</text>
+          <text x="175" y="240" text-anchor="middle" fill="#94a3b8" font-size="12">build_after: [] (Ready Now)</text>
+        </g>
+
+        <!-- Module 2: Frame Builder (Parallel against contract!) -->
+        <g class="vec-node" onclick="inspectNode('Module: frame (Parallel Builder)', 'Owns: fluid/frame.py', 'Act II — Scene Scaffolding', 'Codes against model.py contract in parallel! depends_on records semantic consumer without blocking parallel coding.', 'python fluid.py claim target frame --actor builder-2', 'PARALLEL BUILD')">
+          <rect x="360" y="175" width="200" height="90" rx="10" fill="url(#gradCyan)" stroke="#38bdf8" stroke-width="2" />
+          <text x="460" y="200" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700" class="mono-text">areas/frame/MODULE.md</text>
+          <text x="460" y="220" text-anchor="middle" fill="currentColor" font-size="12">Owns: fluid/frame.py</text>
+          <text x="460" y="240" text-anchor="middle" fill="#67e8f9" font-size="12">depends_on: [model] (Parallel!)</text>
+        </g>
+
+        <!-- Module 3: State & Evidence Builder (Parallel against contract!) -->
+        <g class="vec-node" onclick="inspectNode('Module: state (Parallel Builder)', 'Owns: fluid/state.py', 'Act II — Continuity & Verification Ledger', 'Codes against model.py contract in parallel with frame.py! Disjoint file ownership prevents merge collisions.', 'python fluid.py claim target state --actor builder-3', 'PARALLEL BUILD')">
+          <rect x="645" y="175" width="200" height="90" rx="10" fill="url(#gradCyan)" stroke="#38bdf8" stroke-width="2" />
+          <text x="745" y="200" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700" class="mono-text">areas/state/MODULE.md</text>
+          <text x="745" y="220" text-anchor="middle" fill="currentColor" font-size="12">Owns: fluid/state.py</text>
+          <text x="745" y="240" text-anchor="middle" fill="#67e8f9" font-size="12">depends_on: [model] (Parallel!)</text>
+        </g>
+
+        <!-- Module 4: CLI Assembly (Gated by build_after) -->
+        <g class="vec-node" onclick="inspectNode('Module: cli (Integration Entry)', 'Owns: fluid/__main__.py, fluid.py', 'Final Book Binding & Whole-Work Check', 'Uses build_after to wait only where true dispatch gating is desired, then wires all modules into the CLI entrypoint.', 'python fluid.py claim target cli --actor integrator', 'GATED BY BUILD_AFTER')">
+          <rect x="290" y="335" width="340" height="86" rx="10" fill="url(#gradAmber)" stroke="#fbbf24" stroke-width="2" />
+          <text x="460" y="362" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700" class="mono-text">areas/cli/MODULE.md (Integration)</text>
+          <text x="460" y="382" text-anchor="middle" fill="currentColor" font-size="12">Owns: fluid/__main__.py • Connects model + frame + state</text>
+          <text x="460" y="402" text-anchor="middle" fill="#fde68a" font-size="12" class="mono-text">build_after: [model, frame, state]</text>
+        </g>
+
+        <!-- Semantic Dependency Edges (depends_on) vs Dispatch Gate Edges (build_after) -->
+        <path d="M 275 220 L 360 220" stroke="#22d3ee" stroke-width="2" stroke-dasharray="5 4" class="vec-dash-flow" marker-end="url(#arrowCyan)" />
+        <text x="317" y="212" text-anchor="middle" fill="#22d3ee" font-size="12" class="mono-text">depends_on</text>
+
+        <path d="M 275 190 Q 460 148 645 190" fill="none" stroke="#22d3ee" stroke-width="1.8" stroke-dasharray="5 4" class="vec-dash-flow" marker-end="url(#arrowCyan)" />
+
+        <path d="M 175 265 Q 175 375 290 375" fill="none" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)" />
+        <path d="M 460 265 L 460 335" fill="none" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)" />
+        <path d="M 745 265 Q 745 375 630 375" fill="none" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrowAmber)" />
+
+        <text x="460" y="462" text-anchor="middle" fill="#94a3b8" font-size="12">
+          Cyan Dashed (<tspan fill="#22d3ee" class="mono-text">depends_on</tspan>): Semantic contract — parallel builders code simultaneously • Solid Amber (<tspan fill="#fbbf24" class="mono-text">build_after</tspan>): True dispatch gate
+        </text>
+      `;
+
+      sceneRoot.innerHTML = svg;
+    }
+
+    // =========================================================================
+    // SCENE 5: THREE-TIER BOUNDED CONTEXT ZOOM (WHOLE -> AREA -> ASSIGNMENT)
+    // =========================================================================
+    function renderAct5BoundedContextZoom(p) {
+      const tier = contextZoomTier !== null ? contextZoomTier : Math.min(2, Math.floor(p * 3));
+      const tierNames = [
+        "1. WHOLE VIEW (FRAME.md)",
+        "2. AREA VIEW (Subsystem + Neighbors)",
+        "3. ASSIGNMENT VIEW (Single Leaf Component)"
+      ];
+      const tierSamples = [
+        "WHOLE VIEW (FRAME.md):\n• Purpose & global constraints\n• Complete capability map at coarse resolution\n• Omits worker transcripts & local debugging noise",
+        "AREA VIEW (areas/frame/MODULE.md):\n• Local responsibility & shared contracts\n• Immediate upstream/downstream neighbors\n• Omits unrelated subsystems' internals",
+        "ASSIGNMENT VIEW (fluid.py context --module frame):\n• Owned files: ['fluid/frame.py']\n• Exact I/O contract & acceptance observation\n• High-attention focus: zero 'Lost in the Middle' rot!"
+      ];
+
+      phaseSubStatus.textContent = tierNames[tier];
+      artifactPreviewHeader.textContent = "THREE-TIER CONTEXT LENS";
+      artifactPreviewRung.textContent = `Tier ${tier + 1} / 3`;
+      artifactPreviewContent.textContent = tierSamples[tier];
+
+      // Left Side: Concentric Aperture Zoom Lens (cx=260, cy=265)
+      // Right Side: Attention Curve Comparison (Unguided "Lost in the Middle" vs Fluid Bounded Context)
+      const cx = 255, cy = 265;
+
+      const svg = `
+        <text x="255" y="32" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700" letter-spacing="0.8">
+          PROGRESSIVE CONTEXT ZOOM (3 LENSES)
+        </text>
+        <text x="685" y="32" text-anchor="middle" fill="#34d399" font-size="13" font-weight="700" letter-spacing="0.8">
+          TRANSFORMER ATTENTION: UNGUIDED VS. FLUID
+        </text>
+
+        <!-- Outer Ring: Tier 0 — WHOLE VIEW -->
+        <g class="vec-node" onclick="setContextZoomTier(0); inspectNode('View 1: Whole Project (FRAME.md)', 'Coarse Global Orientation', 'Book Synopsis & Master Chapter Map', 'Shows purpose, capability map, and accepted state without dumping all code into context', 'python fluid.py context target', 'TIER 1: WHOLE')">
+          <circle cx="${cx}" cy="${cy}" r="195"
+            fill="${tier === 0 ? 'rgba(6, 182, 212, 0.16)' : 'rgba(15, 23, 42, 0.35)'}"
+            stroke="${tier === 0 ? '#22d3ee' : 'rgba(56, 189, 248, 0.35)'}"
+            stroke-width="${tier === 0 ? '2.8' : '1.4'}" />
+          <text x="${cx}" y="${cy - 166}" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700">
+            1. WHOLE VIEW (FRAME.md)
+          </text>
+          <text x="${cx}" y="${cy - 148}" text-anchor="middle" fill="#94a3b8" font-size="12">
+            Complete Capability Map • Global Constraints
+          </text>
+        </g>
+
+        <!-- Middle Ring: Tier 1 — AREA VIEW -->
+        <g class="vec-node" onclick="setContextZoomTier(1); inspectNode('View 2: Area View (MODULE.md)', 'Subsystem & Neighbor Contracts', 'Act Outline + Adjacent Chapter Handoffs', 'Shows area responsibility, immediate provider/consumer contracts, and known blockers', 'python fluid.py status target', 'TIER 2: AREA')">
+          <circle cx="${cx}" cy="${cy + 18}" r="130"
+            fill="${tier === 1 ? 'rgba(245, 158, 11, 0.18)' : 'rgba(15, 23, 42, 0.5)'}"
+            stroke="${tier === 1 ? '#fbbf24' : 'rgba(251, 191, 36, 0.4)'}"
+            stroke-width="${tier === 1 ? '2.8' : '1.4'}" />
+          <text x="${cx}" y="${cy - 82}" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="700">
+            2. AREA VIEW (Neighbors)
+          </text>
+          <text x="${cx}" y="${cy - 64}" text-anchor="middle" fill="#94a3b8" font-size="12">
+            Direct Contracts • Upstream/Downstream
+          </text>
+        </g>
+
+        <!-- Inner Core: Tier 2 — ASSIGNMENT VIEW -->
+        <g class="vec-node" onclick="setContextZoomTier(2); inspectNode('View 3: Assignment View', 'Scoped Builder Packet', 'Single Chapter/Scene Card + Immediate Continuity', 'Delivers exact owned files, input/output invariants, and completion check in <2k tokens', 'python fluid.py context target --module frame', 'TIER 3: ASSIGNMENT')">
+          <circle cx="${cx}" cy="${cy + 38}" r="68"
+            fill="${tier === 2 ? 'rgba(16, 185, 129, 0.25)' : 'rgba(15, 23, 42, 0.7)'}"
+            stroke="${tier === 2 ? '#10b981' : '#34d399'}"
+            stroke-width="${tier === 2 ? '3' : '1.6'}"
+            ${tier === 2 ? 'filter="url(#emeraldGlow)"' : ''} />
+          <text x="${cx}" y="${cy + 26}" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">
+            3. ASSIGNMENT
+          </text>
+          <text x="${cx}" y="${cy + 44}" text-anchor="middle" fill="currentColor" font-size="12" class="mono-text">
+            Owned Component
+          </text>
+          <text x="${cx}" y="${cy + 62}" text-anchor="middle" fill="#34d399" font-size="12" font-weight="600">
+            Bounded Context ✓
+          </text>
+        </g>
+
+        <!-- RIGHT SIDE: Top Graph = Unguided Monolithic Context ("Lost in the Middle") -->
+        <rect x="485" y="55" width="395" height="195" rx="12" fill="rgba(15, 23, 42, 0.45)" stroke="rgba(244, 63, 94, 0.4)" stroke-width="1.4" />
+        <text x="505" y="82" fill="#fb7185" font-size="13" font-weight="700">
+          ✗ Unguided Monolithic Context (“Lost in the Middle”)
+        </text>
+        <text x="505" y="100" fill="#94a3b8" font-size="12">
+          Dumping entire repo + chat history drops middle recall to ~20%
+        </text>
+
+        <!-- Axes -->
+        <line x1="515" y1="215" x2="850" y2="215" stroke="#475569" stroke-width="1.2" />
+        <line x1="515" y1="118" x2="515" y2="215" stroke="#475569" stroke-width="1.2" />
+
+        <!-- U-Shaped Attention Curve -->
+        <path d="M 520 125 C 580 212, 780 212, 845 128" fill="none" stroke="#f43f5e" stroke-width="3" />
+        <rect x="590" y="155" width="185" height="48" rx="6" fill="rgba(244, 63, 94, 0.15)" stroke="rgba(244, 63, 94, 0.4)" stroke-dasharray="4 3" />
+        <text x="682" y="176" text-anchor="middle" fill="#fda4af" font-size="12" font-weight="700">DEAD ZONE (~20% Recall)</text>
+        <text x="682" y="194" text-anchor="middle" fill="#fda4af" font-size="12">Context Rot &amp; Duplicate Code</text>
+
+        <!-- RIGHT SIDE: Bottom Graph = FluidSoftware Bounded Context -->
+        <rect x="485" y="272" width="395" height="205" rx="12" fill="rgba(15, 23, 42, 0.45)" stroke="rgba(16, 185, 129, 0.45)" stroke-width="1.4" />
+        <text x="505" y="300" fill="#34d399" font-size="13" font-weight="700">
+          ✓ FluidSoftware Scoped Packet (fluid.py context)
+        </text>
+        <text x="505" y="318" fill="#94a3b8" font-size="12">
+          Loads only Whole Map + Direct Neighbor Contracts + Owned Unit
+        </text>
+
+        <!-- Axes -->
+        <line x1="515" y1="438" x2="850" y2="438" stroke="#475569" stroke-width="1.2" />
+        <line x1="515" y1="340" x2="515" y2="438" stroke="#475569" stroke-width="1.2" />
+
+        <!-- High Flat Attention Curve -->
+        <path d="M 520 352 Q 682 358 845 350" fill="none" stroke="#10b981" stroke-width="3.2" />
+        <rect x="535" y="366" width="300" height="56" rx="8" fill="url(#gradEmerald)" stroke="#10b981" stroke-width="1.3" />
+        <text x="685" y="390" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">
+          HIGH-ATTENTION WINDOW (Primacy + Recency)
+        </text>
+        <text x="685" y="410" text-anchor="middle" fill="currentColor" font-size="12">
+          Cold-start continuation works in any fresh session
+        </text>
+      `;
+
+      sceneRoot.innerHTML = svg;
+    }
+
+    // =========================================================================
+    // SCENE 6: VERSION-BOUND LIFECYCLE & SURGICAL INVALIDATION RIPPLE
+    // =========================================================================
+    function renderAct6LifecycleAndInvalidate(p) {
+      const isInvalidated = invalidateTriggered !== null ? invalidateTriggered : p > 0.55;
+
+      phaseSubStatus.textContent = isInvalidated
+        ? "Contract Changed → Surgical Invalidate Ripple!"
+        : "Connected Verification: All Modules Accepted ✓";
+      artifactPreviewHeader.textContent = isInvalidated
+        ? "SURGICAL INVALIDATION (fluid.py invalidate)"
+        : "BYTE-BOUND ACCEPTANCE (fluid.py verify)";
+      artifactPreviewRung.textContent = isInvalidated ? "Targeted Reset" : "SHA-256 Verified";
+      artifactPreviewContent.textContent = isInvalidated
+        ? `$ python fluid.py invalidate target frame --actor lead --note "Updated plan_frame contract"\n` +
+          `→ Reset 'frame' + downstream consumer 'cli' to planned\n` +
+          `→ Unrelated module 'state' & 'model' remain ACCEPTED ✓\n` +
+          `→ Prior receipts preserved in .fluid/state.json history`
+        : `$ python fluid.py accept target frame --actor reviewer-2 --evidence ev/rev.md\n` +
+          `$ python fluid.py verify target --json\n` +
+          `→ { "accepted": 4, "stale": 0, "integrity_issues": 0 }\n` +
+          `→ Every delivery & review bound to exact SHA-256 file hashes`;
+
+      const svg = `
+        <!-- Top Lifecycle Pipeline Strip -->
+        <text x="460" y="28" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="700" letter-spacing="0.8">
+          EVIDENCE-BOUND LIFECYCLE &amp; SURGICAL DOWNSTREAM INVALIDATION
+        </text>
+
+        <!-- 5 Lifecycle State Pills -->
+        <g transform="translate(55, 44)">
+          <rect x="0" y="0" width="135" height="44" rx="8" fill="rgba(148,163,184,0.12)" stroke="#64748b" stroke-width="1.4" />
+          <text x="67" y="19" text-anchor="middle" fill="currentColor" font-size="12" font-weight="700">1. PLANNED</text>
+          <text x="67" y="35" text-anchor="middle" fill="#94a3b8" font-size="12" class="mono-text">frame --apply</text>
+
+          <line x1="135" y1="22" x2="165" y2="22" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrowCyan)" />
+
+          <rect x="165" y="0" width="135" height="44" rx="8" fill="url(#gradCyan)" stroke="#38bdf8" stroke-width="1.4" />
+          <text x="232" y="19" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="700">2. ACTIVE</text>
+          <text x="232" y="35" text-anchor="middle" fill="currentColor" font-size="12" class="mono-text">claim --actor b1</text>
+
+          <line x1="300" y1="22" x2="330" y2="22" stroke="#38bdf8" stroke-width="1.8" marker-end="url(#arrowCyan)" />
+
+          <rect x="330" y="0" width="145" height="44" rx="8" fill="url(#gradAmber)" stroke="#fbbf24" stroke-width="1.4" />
+          <text x="402" y="19" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">3. DELIVERED</text>
+          <text x="402" y="35" text-anchor="middle" fill="currentColor" font-size="12" class="mono-text">deliver + sha256</text>
+
+          <line x1="475" y1="22" x2="505" y2="22" stroke="#34d399" stroke-width="1.8" marker-end="url(#arrowEmerald)" />
+
+          <rect x="505" y="0" width="155" height="44" rx="8" fill="url(#gradEmerald)" stroke="#10b981" stroke-width="1.8" />
+          <text x="582" y="19" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">4. ACCEPTED ✓</text>
+          <text x="582" y="35" text-anchor="middle" fill="currentColor" font-size="12" class="mono-text">distinct reviewer</text>
+
+          <line x1="660" y1="22" x2="690" y2="22" stroke="#fbbf24" stroke-width="1.8" marker-end="url(#arrowAmber)" />
+
+          <rect x="690" y="0" width="120" height="44" rx="8" fill="${isInvalidated ? 'url(#gradAmber)' : 'rgba(148,163,184,0.12)'}" stroke="#fbbf24" stroke-width="1.5" />
+          <text x="750" y="19" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">INVALIDATE</text>
+          <text x="750" y="35" text-anchor="middle" fill="#94a3b8" font-size="12" class="mono-text">ripple DAG</text>
+        </g>
+
+        <!-- Main Graph Area Showing Surgical Invalidation vs Untouched Modules -->
+        <rect x="45" y="110" width="830" height="375" rx="14" fill="rgba(15,23,42,0.42)" stroke="rgba(56,189,248,0.3)" stroke-width="1.4" />
+
+        <!-- Node 1: model.py (Remains ACCEPTED) -->
+        <g class="vec-node" onclick="inspectNode('fluid/model.py (Unchanged Provider)', 'Status: ACCEPTED ✓ (SHA-256 Intact)', 'Act I — Unchanged World Rules', 'Because model.py was not modified, its acceptance receipt stays valid and requires zero rework.', 'python fluid.py verify target --json', 'ACCEPTED (INTACT)')">
+          <rect x="80" y="235" width="205" height="105" rx="12" fill="url(#gradEmerald)" stroke="#10b981" stroke-width="2.2" />
+          <text x="182" y="264" text-anchor="middle" fill="#34d399" font-size="14" font-weight="700" class="mono-text">fluid/model.py</text>
+          <text x="182" y="286" text-anchor="middle" fill="currentColor" font-size="12">Status: ACCEPTED ✓</text>
+          <text x="182" y="306" text-anchor="middle" fill="#94a3b8" font-size="12" class="mono-text">sha256: 9f8a..c41e</text>
+          <text x="182" y="325" text-anchor="middle" fill="#34d399" font-size="12" font-weight="600">Untouched — Zero Rework</text>
+        </g>
+
+        <!-- Node 2: frame.py (Contract Mutated when isInvalidated=true) -->
+        <g class="vec-node" onclick="toggleInvalidateSim(!isInvalidated); inspectNode('fluid/frame.py (Contract Updated)', isInvalidated ? 'Status: INVALIDATED → PLANNED' : 'Status: ACCEPTED ✓', 'Chapter 4 — Revised Scene Contract', 'When frame.py changes its shared contract, fluid.py invalidate resets frame and its transitive consumers while keeping history.', 'python fluid.py invalidate target frame --actor lead --note \"Contract v2\"', isInvalidated ? 'CONTRACT CHANGED' : 'ACCEPTED ✓')">
+          <rect x="360" y="145" width="215" height="105" rx="12"
+            fill="${isInvalidated ? 'url(#gradAmber)' : 'url(#gradEmerald)'}"
+            stroke="${isInvalidated ? '#fbbf24' : '#10b981'}"
+            stroke-width="2.4" />
+          <text x="467" y="174" text-anchor="middle" fill="${isInvalidated ? '#fbbf24' : '#34d399'}" font-size="14" font-weight="700" class="mono-text">
+            fluid/frame.py
+          </text>
+          <text x="467" y="196" text-anchor="middle" fill="currentColor" font-size="12">
+            ${isInvalidated ? '⚡ Contract Revised!' : 'Status: ACCEPTED ✓'}
+          </text>
+          <text x="467" y="216" text-anchor="middle" fill="#94a3b8" font-size="12" class="mono-text">
+            ${isInvalidated ? 'invalidate → planned' : 'sha256: 3b12..88a0'}
+          </text>
+          <text x="467" y="235" text-anchor="middle" fill="${isInvalidated ? '#fde68a' : '#34d399'}" font-size="12" font-weight="600">
+            ${isInvalidated ? 'Click to toggle state' : 'Click to mutate contract'}
+          </text>
+        </g>
+
+        <!-- Node 3: state.py (Independent Sibling — Remains ACCEPTED!) -->
+        <g class="vec-node" onclick="inspectNode('fluid/state.py (Isolated Sibling)', 'Status: ACCEPTED ✓ (Unchanged)', 'Act III — Unaffected Continuity Subsystem', 'Because state.py does not depend on frame.py, changing frame.py never invalidates state.py! No multiplicative test cascade.', 'python fluid.py status target', 'ISOLATED & SAFE ✓')">
+          <rect x="360" y="325" width="215" height="105" rx="12" fill="url(#gradEmerald)" stroke="#10b981" stroke-width="2.2" />
+          <text x="467" y="354" text-anchor="middle" fill="#34d399" font-size="14" font-weight="700" class="mono-text">fluid/state.py</text>
+          <text x="467" y="376" text-anchor="middle" fill="currentColor" font-size="12">Status: ACCEPTED ✓</text>
+          <text x="467" y="396" text-anchor="middle" fill="#94a3b8" font-size="12" class="mono-text">sha256: 7c44..19f2</text>
+          <text x="467" y="415" text-anchor="middle" fill="#34d399" font-size="12" font-weight="600">Sibling Unaffected ✓</text>
+        </g>
+
+        <!-- Node 4: cli (__main__.py — Downstream Consumer of frame.py) -->
+        <g class="vec-node" onclick="inspectNode('fluid/__main__.py (Downstream Consumer)', isInvalidated ? 'Status: TRANSITIVELY INVALIDATED' : 'Status: ACCEPTED ✓', 'Final Assembly Chapter', 'Depends on frame.py. When frame.py is invalidated, cli is automatically flagged to re-verify against the new contract.', 'python fluid.py status target', isInvalidated ? 'CONSUMER FLAGGED' : 'ACCEPTED ✓')">
+          <rect x="645" y="235" width="205" height="105" rx="12"
+            fill="${isInvalidated ? 'url(#gradAmber)' : 'url(#gradEmerald)'}"
+            stroke="${isInvalidated ? '#fbbf24' : '#10b981'}"
+            stroke-width="2.4" />
+          <text x="747" y="264" text-anchor="middle" fill="${isInvalidated ? '#fbbf24' : '#34d399'}" font-size="14" font-weight="700" class="mono-text">
+            fluid/__main__.py
+          </text>
+          <text x="747" y="286" text-anchor="middle" fill="currentColor" font-size="12">
+            ${isInvalidated ? '⟳ Downstream Reset' : 'Status: ACCEPTED ✓'}
+          </text>
+          <text x="747" y="306" text-anchor="middle" fill="#94a3b8" font-size="12" class="mono-text">
+            depends_on: [frame, state]
+          </text>
+          <text x="747" y="325" text-anchor="middle" fill="${isInvalidated ? '#fde68a' : '#34d399'}" font-size="12" font-weight="600">
+            ${isInvalidated ? 'Re-verifies only this edge' : 'Connected & Verified'}
+          </text>
+        </g>
+
+        <!-- Edges -->
+        <path d="M 285 268 L 360 205" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrowEmerald)" />
+        <path d="M 285 305 L 360 368" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrowEmerald)" />
+
+        <!-- Edge from frame -> cli (Carries Surgical Invalidation Ripple!) -->
+        <path d="M 575 205 L 645 268" fill="none"
+          stroke="${isInvalidated ? '#fbbf24' : '#10b981'}"
+          stroke-width="${isInvalidated ? '3' : '2'}"
+          stroke-dasharray="${isInvalidated ? '6 4' : 'none'}"
+          class="${isInvalidated ? 'vec-dash-flow' : ''}"
+          marker-end="${isInvalidated ? 'url(#arrowAmber)' : 'url(#arrowEmerald)'}" />
+
+        <path d="M 575 368 L 645 305" fill="none" stroke="#10b981" stroke-width="2" marker-end="url(#arrowEmerald)" />
+
+        <text x="460" y="464" text-anchor="middle" fill="#94a3b8" font-size="12">
+          ${isInvalidated
+            ? 'Surgical Ripple: Changing frame.py resets ONLY frame.py → __main__.py. model.py and state.py keep their accepted SHA-256 receipts!'
+            : 'All 4 modules accepted by an independent reviewer with SHA-256 byte-bound evidence receipts.'}
+        </text>
+      `;
+
+      sceneRoot.innerHTML = svg;
+    }
+
+    // =========================================================================
+    // MASTER RENDER & ANIMATION LOOP
+    // =========================================================================
+    function renderCurrentScene() {
+      const totalPct = ((currentAct + actProgress) / ACTS.length) * 100;
+      scrubberFill.style.width = `${Math.min(100, Math.max(2, totalPct))}%`;
+      timeReadout.textContent = `Act ${currentAct + 1}/${ACTS.length}`;
+
+      if (currentAct === 0) renderAct1BookCascade(actProgress);
+      else if (currentAct === 1) renderAct2BookToSoftwareBridge(actProgress);
+      else if (currentAct === 2) renderAct3BottomUpMastery(actProgress);
+      else if (currentAct === 3) renderAct4MonkeyBarsFrame(actProgress);
+      else if (currentAct === 4) renderAct5BoundedContextZoom(actProgress);
+      else if (currentAct === 5) renderAct6LifecycleAndInvalidate(actProgress);
+    }
+
+    function tick(now) {
+      const dt = now - lastTimestamp;
+      lastTimestamp = now;
+
+      if (isPlaying) {
+        actProgress += (dt * playbackSpeed) / ACT_DURATION_MS;
+        if (actProgress >= 1.0) {
+          actProgress = 0;
+          currentAct = (currentAct + 1) % ACTS.length;
+          manualBookRung = null;
+          bottomUpPhase = null;
+          contextZoomTier = null;
+          invalidateTriggered = null;
+          syncHeaderAndControls();
+          renderTabs();
+        }
+        if (currentAct === 0 && manualBookRung === null) {
+          syncContextualControls();
+        }
+        renderCurrentScene();
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // =========================================================================
+    // EVENT LISTENERS
+    // =========================================================================
+    document.getElementById("btnPlayPause").addEventListener("click", () => {
+      isPlaying = !isPlaying;
+      document.getElementById("playIcon").textContent = isPlaying ? "⏸" : "▶";
+      document.getElementById("playLabel").textContent = isPlaying ? "Pause" : "Play";
+    });
+
+    document.getElementById("btnPrev").addEventListener("click", () => {
+      selectAct(currentAct - 1);
+    });
+
+    document.getElementById("btnNext").addEventListener("click", () => {
+      selectAct(currentAct + 1);
+    });
+
+    const speeds = [0.5, 1.0, 1.5, 2.0];
+    let speedIdx = 1;
+    document.getElementById("btnSpeed").addEventListener("click", (e) => {
+      speedIdx = (speedIdx + 1) % speeds.length;
+      playbackSpeed = speeds[speedIdx];
+      e.currentTarget.textContent = `${playbackSpeed.toFixed(1)}x`;
+    });
+
+    scrubberTrack.addEventListener("click", (e) => {
+      const rect = scrubberTrack.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(0.999, (e.clientX - rect.left) / rect.width));
+      const floatAct = ratio * ACTS.length;
+      currentAct = Math.floor(floatAct);
+      actProgress = floatAct - currentAct;
+      manualBookRung = null;
+      bottomUpPhase = null;
+      contextZoomTier = null;
+      invalidateTriggered = null;
+      syncHeaderAndControls();
+      renderTabs();
+      renderCurrentScene();
+    });
+
+        // Standalone browser fallback when opened directly outside Antigravity host
+    if (!getComputedStyle(document.documentElement).getPropertyValue('--background').trim()) {
+      const root = document.documentElement.style;
+      root.setProperty('--background', '#090d16');
+      root.setProperty('--card', '#111827');
+      root.setProperty('--foreground', '#f8fafc');
+      root.setProperty('--muted-foreground', '#94a3b8');
+      root.setProperty('--border', '#1e293b');
+    }
+    // Boot
+    renderTabs();
+    syncHeaderAndControls();
+    renderCurrentScene();
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>
+

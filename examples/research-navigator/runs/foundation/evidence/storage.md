@@ -1,0 +1,9 @@
+# Storage delivery evidence
+
+Actual commands: `python navigator.py index --source-dir corpus --index "runtime/research index.json" --json`, `python navigator.py status --index "runtime/research index.json" --json`, and `python check_actual.py`, all using the assigned Python 3.11 executable.
+
+Observed results: all four original source hashes reported current; a nested index parent was created; persisted JSON re-opened successfully. The 40-command connected check used actual-source copies under `runtime/verification/private actual corpus/` only. A single ASCII case byte was changed in the private Markdown copy, preserving its exact size and modification timestamp: status became changed. Removing the private DOCX produced missing. Search/show/export retained the old indexed content and exposed these statuses. The index bytes did not change during reads.
+
+Truncating that private DOCX to its first 100 original bytes produced `error: Cannot parse Hierarchical Scaffolding in AI Development.docx: File is not a zip file` and exit 1; the previous index remained byte-identical and usable through show. Restoring the DOCX and rebuilding refreshed changed content/hashes and all source statuses became current. Missing-index and output-collision commands also returned concise nonzero errors without stdout. Original corpus hashes were rechecked unchanged.
+
+Details: `check_actual.py`, `runtime/verification/commands.json`, and `runtime/verification/observations.json`. Atomic writes use fsync and os.replace on a temporary file in the destination directory. No declared signature or schema changed; helper functions support CLI output safety and shared atomic report writing. Limits: freshness is an observation at command time, not a transaction preventing later file changes. New files are discovered by rebuild, not status.

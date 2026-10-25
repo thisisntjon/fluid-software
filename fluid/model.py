@@ -199,7 +199,7 @@ def validate_brief(spec: dict) -> list[str]:
             user_path(source, f"{label}.context")
     for module_id, module in by_id.items():
         for field in ("depends_on", "build_after", "parent"):
-            values = [module[field]] if field == "parent" and module.get(field) else module.get(field, []) if field != "parent" else []
+            values = [module[field]] if field == "parent" and module.get(field) is not None else module.get(field, []) if field != "parent" else []
             if not isinstance(values, list):
                 continue
             for value in values:
@@ -218,7 +218,7 @@ def validate_brief(spec: dict) -> list[str]:
                 return
             visiting.add(module_id)
             module = by_id[module_id]
-            edges = [module[field]] if field == "parent" and module.get(field) else module.get(field, []) if field != "parent" else []
+            edges = [module[field]] if field == "parent" and module.get(field) is not None else module.get(field, []) if field != "parent" else []
             if isinstance(edges, list):
                 for edge in edges:
                     if isinstance(edge, str) and edge in by_id:

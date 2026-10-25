@@ -130,7 +130,7 @@
       "owner": "model",
       "purpose": "Actual portable foundation implementation",
       "copy_from": "fluid/model.py",
-      "sha256": "4acf476365ba3364674c70273986d2e614768b8e4d3e6a915d0b25b9dee5ebba"
+      "sha256": "36121bc205bbd5e99242c4536b98acff91fcf118b71ef5c44e1a4812f4ab883c"
     },
     {
       "path": "fluid/frame.py",
@@ -165,7 +165,7 @@
       "owner": "shared",
       "purpose": "Runtime package identity and frozen public contract",
       "copy_from": "fluid/__init__.py",
-      "sha256": "b2547b60046ea9e921f86f2a11c3c5fba5dbab12e833e360d5883e45e60dd098"
+      "sha256": "050d447ba5729e1f25934c1de677c8892195fb81d45b040013af81e97a994c91"
     },
     {
       "path": "docs/FOUNDATION-CONTRACT.md",

@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "id": "research-navigator",
+  "name": "Research Navigator",
+  "outcome": "Search Jon's actual research documents, inspect complete passages and export trustworthy provenance.",
+  "acceptance": [
+    "All five public commands in TASK_BRIEF.md work against all four original source documents.",
+    "Keep source text available while visibly identifying current, changed and missing sources."
+  ],
+  "constraints": [
+    "Python 3.11 standard library only; offline; original corpus is read-only.",
+    "Skeleton files are unfinished contracts, not completed behavior or fake data."
+  ],
+  "sources": [
+    "TASK_BRIEF.md",
+    "corpus"
+  ],
+  "state_entry": "TASK_BRIEF.md",
+  "entrypoints": [
+    "python navigator.py --help"
+  ],
+  "modules": [
+    {
+      "id": "parsing",
+      "name": "Parsing",
+      "purpose": "Parse the real corpus into stable full passages and native locations.",
+      "owner": "parsing builder",
+      "home": "areas/parsing",
+      "owns": [
+        "nav/parsing.py"
+      ],
+      "depends_on": [],
+      "build_after": [],
+      "outputs": [
+        "Parse the real corpus into stable full passages and native locations."
+      ],
+      "acceptance": [
+        "Meet the relevant observable behavior and public JSON shapes in TASK_BRIEF.md on the actual corpus."
+      ],
+      "inputs": [
+        "Index contract in nav/contracts.py; source-only input under corpus/"
+      ],
+      "context": [
+        "TASK_BRIEF.md",
+        "nav/contracts.py"
+      ],
+      "commands": [
+        "python navigator.py --help"
+      ]
+    },
+    {
+      "id": "storage",
+      "name": "Storage",
+      "purpose": "Safely persist/reopen the index and hash source freshness.",
+      "owner": "storage builder",
+      "home": "areas/storage",
+      "owns": [
+        "nav/storage.py"
+      ],
+      "depends_on": [],
+      "build_after": [],
+      "outputs": [
+        "Safely persist/reopen the index and hash source freshness."
+      ],
+      "acceptance": [
+        "Meet the relevant observable behavior and public JSON shapes in TASK_BRIEF.md on the actual corpus."
+      ],
+      "inputs": [
+        "Index contract in nav/contracts.py; source-only input under corpus/"
+      ],
+      "context": [
+        "TASK_BRIEF.md",
+        "nav/contracts.py"
+      ],
+      "commands": [
+        "python navigator.py --help"
+      ]
+    },
+    {
+      "id": "query",
+      "name": "Query",
+      "purpose": "Retrieve complete source-backed passages with literal search and current status.",
+      "owner": "query builder",
+      "home": "areas/query",
+      "owns": [
+        "nav/query.py"
+      ],
+      "depends_on": [
+        "parsing",
+        "storage"
+      ],
+      "build_after": [],
+      "outputs": [
+        "Retrieve complete source-backed passages with literal search and current status."
+      ],
+      "acceptance": [
+        "Meet the relevant observable behavior and public JSON shapes in TASK_BRIEF.md on the actual corpus."
+      ],
+      "inputs": [
+        "Index contract in nav/contracts.py; source-only input under corpus/"
+      ],
+      "context": [
+        "TASK_BRIEF.md",
+        "nav/contracts.py"
+      ],
+      "commands": [
+        "python navigator.py --help"
+      ]
+    },
+    {
+      "id": "cli",
+      "name": "Cli",
+      "purpose": "Connect all commands and export usable source-linked evidence.",
+      "owner": "cli builder",
+      "home": "areas/cli",
+      "owns": [
+        "nav/cli.py",
+        "navigator.py",
+        "README.md"
+      ],
+      "depends_on": [
+        "parsing",
+        "storage",
+        "query"
+      ],
+      "build_after": [],
+      "outputs": [
+        "Connect all commands and export usable source-linked evidence."
+      ],
+      "acceptance": [
+        "Meet the relevant observable behavior and public JSON shapes in TASK_BRIEF.md on the actual corpus."
+      ],
+      "inputs": [
+        "Index contract in nav/contracts.py; source-only input under corpus/"
+      ],
+      "context": [
+        "TASK_BRIEF.md",
+        "nav/contracts.py"
+      ],
+      "commands": [
+        "python navigator.py --help"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "nav/__init__.py",
+      "owner": "shared",
+      "purpose": "Native initial interface; implementation explicitly pending",
+      "content": "\"\"\"Local Research Navigator.\"\"\"\n"
+    },
+    {
+      "path": "nav/contracts.py",
+      "owner": "shared",
+      "purpose": "Native initial interface; implementation explicitly pending",
+      "content": "\"\"\"Frozen initial integration contracts; revise explicitly if actual evidence requires it.\n\nIndex is a JSON-compatible dict with schema_version=1, source_dir (absolute),\nsources (list of source/sha256 dicts), passages (list of public PASSAGE dicts).\nStored passages omit dynamic status; query/show attach status from current bytes.\nParsing owns text, native locators, heading context and deterministic IDs.\nStorage owns atomic JSON persistence and current/changed/missing source status.\nQuery owns literal normalized-whitespace phrase matching and full passage lookup.\nCLI owns public arguments, JSON/diagnostics and readable evidence export.\nFunctions raise NavigatorError for actionable user failures; no fake success.\n\"\"\"\n\nclass NavigatorError(ValueError):\n    pass\n"
+    },
+    {
+      "path": "nav/parsing.py",
+      "owner": "parsing",
+      "purpose": "Native initial interface; implementation explicitly pending",
+      "content": "\"\"\"Actual corpus parsing; implementation pending.\"\"\"\nfrom pathlib import Path\nfrom .contracts import NavigatorError\n\ndef parse_corpus(source_dir: Path) -> dict:\n    raise NotImplementedError(\"Read actual Markdown, text and DOCX including tables\")\n"
+    },
+    {
+      "path": "nav/storage.py",
+      "owner": "storage",
+      "purpose": "Native initial interface; implementation explicitly pending",
+      "content": "\"\"\"Persistence and real source freshness; implementation pending.\"\"\"\nfrom pathlib import Path\nfrom .contracts import NavigatorError\n\ndef write_index(index: dict, path: Path) -> None:\n    raise NotImplementedError(\"Atomic replacement after complete parsing\")\n\ndef load_index(path: Path) -> dict:\n    raise NotImplementedError(\"Load and validate persisted index\")\n\ndef source_statuses(index: dict) -> dict[str, str]:\n    raise NotImplementedError(\"Hash actual source bytes\")\n"
+    },
+    {
+      "path": "nav/query.py",
+      "owner": "query",
+      "purpose": "Native initial interface; implementation explicitly pending",
+      "content": "\"\"\"Literal retrieval and lookup; implementation pending.\"\"\"\nfrom .contracts import NavigatorError\n\ndef search(index: dict, query: str, limit: int) -> list[dict]:\n    raise NotImplementedError(\"Return full matching passages with current source status\")\n\ndef show(index: dict, passage_id: str) -> dict:\n    raise NotImplementedError(\"Return full passage with current source status\")\n"
+    },
+    {
+      "path": "nav/cli.py",
+      "owner": "cli",
+      "purpose": "Native initial interface; implementation explicitly pending",
+      "content": "\"\"\"Public CLI and evidence export; implementation pending.\"\"\"\n\ndef main(argv=None) -> int:\n    raise NotImplementedError(\"Implement the five commands in TASK_BRIEF.md\")\n"
+    },
+    {
+      "path": "navigator.py",
+      "owner": "cli",
+      "purpose": "Native initial interface; implementation explicitly pending",
+      "content": "from nav.cli import main\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n"
+    }
+  ]
+}
